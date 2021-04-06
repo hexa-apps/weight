@@ -38,6 +38,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
+    splashScreen();
     super.initState();
   }
 
