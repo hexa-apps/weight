@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hive/hive.dart';
 import 'package:weight/pages/home_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -12,26 +13,26 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   Future splashScreen() async {
-    // await Hive.openBox('loginState');
-    // await Hive.openBox('parameters');
-    // var box = Hive.box('loginState');
-    // var status = await box.get('loginStatus');
-    // await box.close();
+    await Hive.openBox('loginState');
+    await Hive.openBox('weights');
+    var box = Hive.box('loginState');
+    var status = await box.get('loginStatus');
+    await box.close();
     Timer(Duration(seconds: 3), () {
-      // if (status == 1) {
-      //   print('ikinci falan');
+      if (status == 1) {
+        print('ikinci falan');
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
           (route) => false);
-      // } else {
-      //   print('ilk kez');
-      //   Navigator.pushAndRemoveUntil(
-      //       context,
-      //       MaterialPageRoute(builder: (context) => HomeView()),
-      //       // MaterialPageRoute(builder: (context) => IntroScreen()),
-      //       (route) => false);
-      // }
+      } else {
+        print('ilk kez');
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+            // MaterialPageRoute(builder: (context) => IntroScreen()),
+            (route) => false);
+      }
     });
   }
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weight/pages/splash_page.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
   runApp(MyApp());
 }
 
