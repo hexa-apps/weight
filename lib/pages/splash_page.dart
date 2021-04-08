@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
-import 'package:weight/pages/home_page.dart';
+import 'package:weight/main_view.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -21,15 +21,15 @@ class _SplashPageState extends State<SplashPage> {
     Timer(Duration(seconds: 3), () {
       if (status == 1) {
         print('ikinci falan');
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-          (route) => false);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeView()),
+            (route) => false);
       } else {
         print('ilk kez');
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => HomeView()),
             // MaterialPageRoute(builder: (context) => IntroScreen()),
             (route) => false);
       }
@@ -53,7 +53,8 @@ class _SplashPageState extends State<SplashPage> {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Yukleniyor'),
+          Image(
+              image: AssetImage('assets/png/undraw_healthy_options_sdo3.png')),
           // Container(
           //   decoration: null,
           //   margin: EdgeInsets.symmetric(horizontal: 10),

@@ -11,6 +11,7 @@ class _HomePageState extends State<HomePage> {
   DateTime selectedDate = DateTime.now();
   double lastWeight = 95.0;
   TextEditingController weightController = TextEditingController();
+  TextEditingController weightEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'weight',
+          'ŞÜŞKO',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.deepPurpleAccent,
@@ -62,19 +63,18 @@ class _HomePageState extends State<HomePage> {
                                       ? Colors.red
                                       : Colors.green;
                               return ListTile(
-                                onTap: () => ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  duration: Duration(seconds: 2),
-                                  content: Text(weightData.elementAt(index)),
-                                )),
-                                minVerticalPadding: 2,
+                                dense: true,
+                                onTap: () => buildEditDialog(
+                                    context,
+                                    dates.elementAt(index),
+                                    weightData.elementAt(index)),
                                 tileColor: Colors.white,
                                 leading: Icon(
                                   Icons.star,
                                   color: index == dates.length - 1
                                       ? Colors.deepPurpleAccent
                                       : Colors.white,
-                                  size: 40,
+                                  size: 36,
                                 ),
                                 title: Text(weightData.elementAt(index)),
                                 subtitle: Text(dates.elementAt(index)),
@@ -97,13 +97,82 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurpleAccent,
-        onPressed: () => buildShowDialog(context),
+        onPressed: () => buildAddDialog(context),
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
-  Future buildShowDialog(BuildContext context) {
+  Future buildEditDialog(BuildContext context, String date, String weight) {
+    weightEditController.text = weight;
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              date,
+            ),
+            titleTextStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurpleAccent,
+                fontSize: 24),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: weightEditController,
+                  decoration: InputDecoration(
+                      labelText: 'Enter your weight',
+                      labelStyle: TextStyle(color: Colors.deepPurpleAccent),
+                      border: UnderlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.deepPurpleAccent)),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: const BorderSide(
+                            color: Colors.deepPurpleAccent, width: 1.5),
+                      )),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                  ], // Only numbers can be entered
+                )
+              ],
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    deleteWeight(date);
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Sil',
+                    style: TextStyle(color: Colors.red),
+                  )),
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Vazgeç',
+                    style: TextStyle(color: Colors.red),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    setWeight(date, weightEditController.text);
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Tamam',
+                    style: TextStyle(color: Colors.deepPurpleAccent),
+                  )),
+            ],
+          );
+        });
+  }
+
+  Future buildAddDialog(BuildContext context) {
     weightController.text = lastWeight.toString();
     return showDialog(
         context: context,
@@ -205,6 +274,6 @@ class _HomePageState extends State<HomePage> {
         selectedDate = picked;
       });
     }
-    await buildShowDialog(context);
+    await buildAddDialog(context);
   }
 }
