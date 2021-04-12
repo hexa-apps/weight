@@ -18,6 +18,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^2.0.0
   flutter_spinkit: ^5.0.0
+  charts_flutter: ^0.10.0
 
 dev_dependencies:
   flutter_test:
