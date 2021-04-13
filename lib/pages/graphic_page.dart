@@ -46,20 +46,100 @@ class _GraphicPageState extends State<GraphicPage> {
                         List<double> weightData = snapshot.data.last
                             .map<double>((weight) => double.parse(weight))
                             .toList();
-                        return charts.TimeSeriesChart(
-                          _createSampleData(dates, weightData),
-                          animate: false,
-                          primaryMeasureAxis: charts.NumericAxisSpec(
-                              tickProviderSpec:
-                                 charts.BasicNumericTickProviderSpec(
-                                      zeroBound: false)),
-                          defaultRenderer: charts.LineRendererConfig(),
-                          customSeriesRenderers: [
-                            charts.PointRendererConfig(
-                                customRendererId: 'customPoint')
+                        return Column(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('First'),
+                                        Text(weightData.first.toString()),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Now'),
+                                        Text(weightData.last.toString()),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text('Goal'),
+                                        Text('sss'),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.stop,
+                                      size: 20,
+                                      color: Colors.blue,
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text('Weight'),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    Icon(
+                                      Icons.stop,
+                                      size: 20,
+                                      color: Colors.green,
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text('Mean'),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    Icon(
+                                      Icons.stop,
+                                      size: 20,
+                                      color: Colors.red,
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Text('Goal'),
+                                  ],
+                                )),
+                            Expanded(
+                              flex: 7,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                child: charts.TimeSeriesChart(
+                                  _createSampleData(dates, weightData),
+                                  animate: false,
+                                  primaryMeasureAxis: charts.NumericAxisSpec(
+                                      tickProviderSpec:
+                                          charts.BasicNumericTickProviderSpec(
+                                              zeroBound: false)),
+                                  defaultRenderer: charts.LineRendererConfig(),
+                                  customSeriesRenderers: [
+                                    charts.PointRendererConfig(
+                                        customRendererId: 'customPoint')
+                                  ],
+                                  dateTimeFactory:
+                                      const charts.LocalDateTimeFactory(),
+                                  behaviors: [charts.PanAndZoomBehavior()],
+                                ),
+                              ),
+                            ),
                           ],
-                          dateTimeFactory: const charts.LocalDateTimeFactory(),
-                          behaviors: [charts.PanAndZoomBehavior()],
                         );
                       } else {
                         return Text('Kilo ekle');
