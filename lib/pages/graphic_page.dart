@@ -59,14 +59,14 @@ class _GraphicPageState extends State<GraphicPage> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text('Başlangıç'),
-                                        Text(weightData.first.toString()),
+                                        Text(weightData.last.toString()),
                                       ],
                                     ),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text('Şuan'),
-                                        Text(weightData.last.toString()),
+                                        Text(weightData.first.toString()),
                                       ],
                                     ),
                                     Column(
