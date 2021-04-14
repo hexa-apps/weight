@@ -11,6 +11,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'ŞÜŞKO',
           style: TextStyle(color: Colors.white),

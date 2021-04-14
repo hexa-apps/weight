@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'ŞÜŞKO',
           style: TextStyle(color: Colors.white),
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                 TextField(
                   controller: weightEditController,
                   decoration: InputDecoration(
-                      labelText: 'Enter your weight',
+                      labelText: 'Kilonuzu giriniz',
                       labelStyle: TextStyle(color: Colors.deepPurpleAccent),
                       border: UnderlineInputBorder(
                           borderSide:
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                 TextField(
                   controller: weightController,
                   decoration: InputDecoration(
-                      labelText: 'Enter your weight',
+                      labelText: 'Kilonuzu giriniz',
                       labelStyle: TextStyle(color: Colors.deepPurpleAccent),
                       border: UnderlineInputBorder(
                           borderSide:

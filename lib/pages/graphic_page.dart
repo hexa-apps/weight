@@ -13,6 +13,7 @@ class _GraphicPageState extends State<GraphicPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             'ŞÜŞKO',
             style: TextStyle(color: Colors.white),
@@ -57,21 +58,21 @@ class _GraphicPageState extends State<GraphicPage> {
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('First'),
+                                        Text('Başlangıç'),
                                         Text(weightData.first.toString()),
                                       ],
                                     ),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('Now'),
+                                        Text('Şuan'),
                                         Text(weightData.last.toString()),
                                       ],
                                     ),
                                     Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('Goal'),
+                                        Text('Hedef'),
                                         Text('sss'),
                                       ],
                                     ),
@@ -90,7 +91,7 @@ class _GraphicPageState extends State<GraphicPage> {
                                     SizedBox(
                                       width: 2,
                                     ),
-                                    Text('Weight'),
+                                    Text('Kilo'),
                                     SizedBox(
                                       width: 6,
                                     ),
@@ -102,7 +103,7 @@ class _GraphicPageState extends State<GraphicPage> {
                                     SizedBox(
                                       width: 2,
                                     ),
-                                    Text('Mean'),
+                                    Text('Ortalama'),
                                     SizedBox(
                                       width: 6,
                                     ),
@@ -114,7 +115,7 @@ class _GraphicPageState extends State<GraphicPage> {
                                     SizedBox(
                                       width: 2,
                                     ),
-                                    Text('Goal'),
+                                    Text('Hedef'),
                                   ],
                                 )),
                             Expanded(
@@ -153,8 +154,11 @@ class _GraphicPageState extends State<GraphicPage> {
   List<charts.Series<TimeSeriesWeight, DateTime>> _createSampleData(
       dates, weightData) {
     var desktopSalesData = <TimeSeriesWeight>[];
-    // var tableSalesData = <TimeSeriesWeight>[];
+    var tableSalesData = <TimeSeriesWeight>[];
     var mobileSalesData = <TimeSeriesWeight>[];
+    var sum = 0.0;
+    weightData.forEach((a) => sum += a);
+    var mean = sum / weightData.length;
     for (var i = 0; i < dates.length; i++) {
       desktopSalesData.add(TimeSeriesWeight(
           DateTime(
@@ -162,12 +166,12 @@ class _GraphicPageState extends State<GraphicPage> {
               int.parse(dates.elementAt(i).split('-').elementAt(1)),
               int.parse(dates.elementAt(i).split('-').last)),
           weightData.elementAt(i)));
-      // tableSalesData.add(TimeSeriesWeight(
-      //     DateTime(
-      //         int.parse(dates.elementAt(i).split('-').first),
-      //         int.parse(dates.elementAt(i).split('-').elementAt(1)),
-      //         int.parse(dates.elementAt(i).split('-').last)),
-      //     weightData.elementAt(i)));
+      tableSalesData.add(TimeSeriesWeight(
+          DateTime(
+              int.parse(dates.elementAt(i).split('-').first),
+              int.parse(dates.elementAt(i).split('-').elementAt(1)),
+              int.parse(dates.elementAt(i).split('-').last)),
+          mean));
       mobileSalesData.add(TimeSeriesWeight(
           DateTime(
               int.parse(dates.elementAt(i).split('-').first),
@@ -183,16 +187,16 @@ class _GraphicPageState extends State<GraphicPage> {
         measureFn: (TimeSeriesWeight sales, _) => sales.sales,
         data: desktopSalesData,
       ),
-      // charts.Series<TimeSeriesWeight, DateTime>(
-      //   id: 'Tablet',
-      //   colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-      //   domainFn: (TimeSeriesWeight sales, _) => sales.time,
-      //   measureFn: (TimeSeriesWeight sales, _) => sales.sales,
-      //   data: tableSalesData,
-      // ),
+      charts.Series<TimeSeriesWeight, DateTime>(
+        id: 'Tablet',
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        domainFn: (TimeSeriesWeight sales, _) => sales.time,
+        measureFn: (TimeSeriesWeight sales, _) => sales.sales,
+        data: tableSalesData,
+      ),
       charts.Series<TimeSeriesWeight, DateTime>(
           id: 'Mobile',
-          colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
           domainFn: (TimeSeriesWeight sales, _) => sales.time,
           measureFn: (TimeSeriesWeight sales, _) => sales.sales,
           data: mobileSalesData)
