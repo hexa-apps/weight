@@ -15,6 +15,7 @@ class _SplashPageState extends State<SplashPage> {
   Future splashScreen() async {
     await Hive.openBox('loginState');
     await Hive.openBox('weights');
+    await Hive.openBox('goal');
     var box = Hive.box('loginState');
     var status = await box.get('loginStatus');
     await box.close();
