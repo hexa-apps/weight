@@ -13,6 +13,7 @@ class _GraphicPageState extends State<GraphicPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
           centerTitle: true,
           title: Text(
             'ŞÜŞKO',
@@ -24,7 +25,7 @@ class _GraphicPageState extends State<GraphicPage> {
             color: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(),
+              future: getWeights(true),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -44,7 +45,9 @@ class _GraphicPageState extends State<GraphicPage> {
                     } else {
                       if (snapshot.data.first.length > 0) {
                         var dates = snapshot.data.first;
-                        List<double> weightData = snapshot.data.last
+                        var goal = snapshot.data.last.first;
+                        List<double> weightData = snapshot.data
+                            .elementAt(1)
                             .map<double>((weight) => double.parse(weight))
                             .toList();
                         return Column(
@@ -55,26 +58,59 @@ class _GraphicPageState extends State<GraphicPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text('Başlangıç'),
-                                        Text(weightData.last.toString()),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Başlangıç',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          Text(
+                                            weightData.last.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text('Şuan'),
-                                        Text(weightData.first.toString()),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Şimdiki',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          Text(
+                                            weightData.first.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text('Hedef'),
-                                        Text('sss'),
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Hedef',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          Text(
+                                            goal.toString(),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 )),
@@ -123,7 +159,7 @@ class _GraphicPageState extends State<GraphicPage> {
                               child: Container(
                                 padding: EdgeInsets.symmetric(vertical: 12),
                                 child: charts.TimeSeriesChart(
-                                  _createSampleData(dates, weightData),
+                                  _createSampleData(dates, weightData, goal),
                                   animate: false,
                                   primaryMeasureAxis: charts.NumericAxisSpec(
                                       tickProviderSpec:
@@ -152,8 +188,9 @@ class _GraphicPageState extends State<GraphicPage> {
   }
 
   List<charts.Series<TimeSeriesWeight, DateTime>> _createSampleData(
-      dates, weightData) {
+      dates, weightData, goal) {
     var desktopSalesData = <TimeSeriesWeight>[];
+    var monitorSalesData = <TimeSeriesWeight>[];
     var tableSalesData = <TimeSeriesWeight>[];
     var mobileSalesData = <TimeSeriesWeight>[];
     var sum = 0.0;
@@ -166,6 +203,12 @@ class _GraphicPageState extends State<GraphicPage> {
               int.parse(dates.elementAt(i).split('-').elementAt(1)),
               int.parse(dates.elementAt(i).split('-').last)),
           weightData.elementAt(i)));
+      monitorSalesData.add(TimeSeriesWeight(
+          DateTime(
+              int.parse(dates.elementAt(i).split('-').first),
+              int.parse(dates.elementAt(i).split('-').elementAt(1)),
+              int.parse(dates.elementAt(i).split('-').last)),
+          goal));
       tableSalesData.add(TimeSeriesWeight(
           DateTime(
               int.parse(dates.elementAt(i).split('-').first),
@@ -186,6 +229,13 @@ class _GraphicPageState extends State<GraphicPage> {
         domainFn: (TimeSeriesWeight sales, _) => sales.time,
         measureFn: (TimeSeriesWeight sales, _) => sales.sales,
         data: desktopSalesData,
+      ),
+      charts.Series<TimeSeriesWeight, DateTime>(
+        id: 'Monitor',
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        domainFn: (TimeSeriesWeight sales, _) => sales.time,
+        measureFn: (TimeSeriesWeight sales, _) => sales.sales,
+        data: monitorSalesData,
       ),
       charts.Series<TimeSeriesWeight, DateTime>(
         id: 'Tablet',

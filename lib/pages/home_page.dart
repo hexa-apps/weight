@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weight/core/services/weights.dart';
+import '../core/services/weights.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(),
+              future: getWeights(false),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                         return ListView.separated(
                             itemBuilder: (context, index) {
                               var dates = snapshot.data.first;
-                              var weightData = snapshot.data.last;
+                              var weightData = snapshot.data.elementAt(1);
                               var difference = index == dates.length - 1
                                   ? 0.0
                                   : double.parse(weightData.elementAt(index)) -
@@ -191,24 +191,32 @@ class _HomePageState extends State<HomePage> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  controller: weightController,
-                  decoration: InputDecoration(
-                      labelText: 'Kilonuzu giriniz',
-                      labelStyle: TextStyle(color: Colors.deepPurpleAccent),
-                      border: UnderlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.deepPurpleAccent)),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.deepPurpleAccent, width: 1.5),
-                      )),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                  ], // Only numbers can be entered
-                  onChanged: (value) => weightValueChanged(value),
-                )
+                // DoublePickerFormField(
+                //     value: lastWeight,
+                //     fieldOptions: {'min': 0, 'max': 300},
+                //     onSaved: (double val) {
+                //       print(val);
+                //       print('ss');
+                //       return val;
+                //     })
+                // TextField(
+                //   controller: weightController,
+                //   decoration: InputDecoration(
+                //       labelText: 'Kilonuzu giriniz',
+                //       labelStyle: TextStyle(color: Colors.deepPurpleAccent),
+                //       border: UnderlineInputBorder(
+                //           borderSide:
+                //               const BorderSide(color: Colors.deepPurpleAccent)),
+                //       focusedBorder: UnderlineInputBorder(
+                //         borderSide: const BorderSide(
+                //             color: Colors.deepPurpleAccent, width: 1.5),
+                //       )),
+                //   keyboardType: TextInputType.number,
+                //   inputFormatters: <TextInputFormatter>[
+                //     FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+                //   ], // Only numbers can be entered
+                //   onChanged: (value) => weightValueChanged(value),
+                // )
               ],
             ),
             actions: [

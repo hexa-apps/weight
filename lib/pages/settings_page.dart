@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:weight/widgets/decimal_picker.dart';
+import 'package:hive/hive.dart';
+import '../core/services/weights.dart';
+import '../widgets/number_picker.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -8,18 +9,48 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var goalWeight = 95.0;
+  double goalWeight = 95.0;
   NumberPicker decimalNumberPicker;
 
-  // void _handleValueChangedExternally(num value) {
-  //   if (value != null) {
-  //     setState(() => goalWeight = value);
-  //     decimalNumberPicker. = value;
-  //   }
-  // }
+  @override
+  void initState() {
+    getGoalWeight();
+    super.initState();
+  }
+
+  Future getGoalWeight() async {
+    var box = Hive.box('goal');
+    var goal = await box.get('goalWeight');
+    if (goal is double) {
+      goalWeight = goal;
+    }
+    setState(() {});
+  }
+
+  void _handleValueChanged(num value) {
+    if (value != null) {
+      //`setState` will notify the framework that the internal state of this object has changed.
+      setState(() => goalWeight = value);
+    }
+  }
+
+  void _handleValueChangedExternally(num value) {
+    if (value != null) {
+      print(value);
+      setState(() => goalWeight = value);
+      setGoalWeight(value);
+      decimalNumberPicker.animateDecimalAndInteger(value);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    decimalNumberPicker = NumberPicker.decimal(
+        initialValue: goalWeight,
+        minValue: 0,
+        maxValue: 300,
+        decimalPlaces: 1,
+        onChanged: _handleValueChanged);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,65 +78,20 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Future _showDoubleDialog() {
-    return showDialog<double>(
+  Future _showDoubleDialog() async {
+    await showDialog<double>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Hedef',
-          ),
-          titleTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.deepPurpleAccent,
-              fontSize: 24),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          content: DoublePickerFormField(
-              value: goalWeight,
-              fieldOptions: {'min': 0, 'max': 300},
-              onSaved: (val) {
-                print(val);
-                print('ss');
-              }),
-          actions: [
-            // TextButton(
-            //     onPressed: () => setDate(),
-            //     child: Text(
-            //       selectedDate.toLocal().toString().split(' ').first,
-            //       style: TextStyle(
-            //           color: Colors.deepPurpleAccent,
-            //           fontWeight: FontWeight.bold),
-            //     )),
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'Vazgeç',
-                  style: TextStyle(color: Colors.red),
-                )),
-            TextButton(
-                onPressed: () {
-                  print('tamam');
-                  // print(weightController.text);
-                  // setWeight(selectedDate.toLocal().toString().split(' ').first,
-                  //     lastWeight.toString());
-                  // setState(() {});
-                  // Navigator.pop(context);
-                },
-                child: Text(
-                  'Tamam',
-                  style: TextStyle(color: Colors.deepPurpleAccent),
-                )),
-          ],
+        return NumberPickerDialog.decimal(
+          confirmLabel: 'Tamam',
+          cancelLabel: 'Vazgeç',
+          minValue: 0,
+          maxValue: 300,
+          decimalPlaces: 1,
+          initialDoubleValue: goalWeight,
+          title: Text('Hedef'),
         );
-        // return NumberPickerDialog.decimal(
-        //   minValue: 0,
-        //   maxValue: 300,
-        //   decimalPlaces: 1,
-        //   initialDoubleValue: goalWeight,
-        //   title: Text('Pick a decimal value'),
-        // );
       },
-    );
+    ).then(_handleValueChangedExternally);
   }
 }

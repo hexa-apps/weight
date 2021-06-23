@@ -5,9 +5,22 @@ void setWeight(String key, String value) async {
   await box.put(key, value);
 }
 
-Future<List<List>> getWeights() async {
+void setGoalWeight(double value) async {
+  var box = Hive.box('goal');
+  await box.put('goalWeight', value);
+}
+
+Future<List<List>> getWeights(bool isGoal) async {
+  var goal = 0.0;
   var box = Hive.box('weights');
   var values = [];
+  if (isGoal) {
+    var goalBox = Hive.box('goal');
+    var goalHive = await goalBox.get('goalWeight');
+    if (goalHive is double) {
+      goal = goalHive;
+    }
+  }
   if (box.isNotEmpty) {
     var keys = box.keys.toList()
       ..sort((a, b) => DateTime(
@@ -21,9 +34,9 @@ Future<List<List>> getWeights() async {
     keys.forEach((element) {
       values.add(box.toMap()[element]);
     });
-    return [keys, values];
+    return [keys, values, [goal]];
   } else {
-    return [[], values];
+    return [[], values, [goal]];
   }
 }
 

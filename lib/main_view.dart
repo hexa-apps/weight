@@ -25,6 +25,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       body: pageOptions.elementAt(currentPage),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         onTap: (int index) => {
           setState(() {
             currentPage = index;
