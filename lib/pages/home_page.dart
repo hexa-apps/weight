@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:weight/pages/weight_edit_page.dart';
+import 'package:weight/widgets/number_picker.dart';
 import '../core/services/weights.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,8 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DateTime selectedDate = DateTime.now();
   double lastWeight = 95.0;
-  TextEditingController weightController = TextEditingController();
-  TextEditingController weightEditController = TextEditingController();
+  double goalWeight = 95.0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(false),
+              future: getWeights(true),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> {
                       return Text('Hata: ${snapshot.error}');
                     } else {
                       if (snapshot.data.first.length > 0) {
+                        goalWeight = snapshot.data.last.first;
                         return ListView.separated(
                             itemBuilder: (context, index) {
                               var dates = snapshot.data.first;
@@ -98,14 +100,19 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurpleAccent,
-        onPressed: () => buildAddDialog(context),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => WeightEditPage(
+            goalWeight: goalWeight,
+            // earthQuake: eq,
+            // mapIndex: mapIndex,
+          ),
+        )),
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
   Future buildEditDialog(BuildContext context, String date, String weight) {
-    weightEditController.text = weight;
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -121,25 +128,7 @@ class _HomePageState extends State<HomePage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: weightEditController,
-                  decoration: InputDecoration(
-                      labelText: 'Kilonuzu giriniz',
-                      labelStyle: TextStyle(color: Colors.deepPurpleAccent),
-                      border: UnderlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.deepPurpleAccent)),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.deepPurpleAccent, width: 1.5),
-                      )),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                  ], // Only numbers can be entered
-                )
-              ],
+              children: [],
             ),
             actions: [
               TextButton(
@@ -160,8 +149,8 @@ class _HomePageState extends State<HomePage> {
                   )),
               TextButton(
                   onPressed: () {
-                    setWeight(date, weightEditController.text);
-                    setState(() {});
+                    // setWeight(date, weightEditController.text);
+                    // setState(() {});
                     Navigator.pop(context);
                   },
                   child: Text(
@@ -174,7 +163,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future buildAddDialog(BuildContext context) {
-    weightController.text = lastWeight.toString();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -190,34 +178,7 @@ class _HomePageState extends State<HomePage> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                // DoublePickerFormField(
-                //     value: lastWeight,
-                //     fieldOptions: {'min': 0, 'max': 300},
-                //     onSaved: (double val) {
-                //       print(val);
-                //       print('ss');
-                //       return val;
-                //     })
-                // TextField(
-                //   controller: weightController,
-                //   decoration: InputDecoration(
-                //       labelText: 'Kilonuzu giriniz',
-                //       labelStyle: TextStyle(color: Colors.deepPurpleAccent),
-                //       border: UnderlineInputBorder(
-                //           borderSide:
-                //               const BorderSide(color: Colors.deepPurpleAccent)),
-                //       focusedBorder: UnderlineInputBorder(
-                //         borderSide: const BorderSide(
-                //             color: Colors.deepPurpleAccent, width: 1.5),
-                //       )),
-                //   keyboardType: TextInputType.number,
-                //   inputFormatters: <TextInputFormatter>[
-                //     FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-                //   ], // Only numbers can be entered
-                //   onChanged: (value) => weightValueChanged(value),
-                // )
-              ],
+              children: [],
             ),
             actions: [
               TextButton(
@@ -236,8 +197,6 @@ class _HomePageState extends State<HomePage> {
                   )),
               TextButton(
                   onPressed: () {
-                    print('tamam');
-                    print(weightController.text);
                     setWeight(
                         selectedDate.toLocal().toString().split(' ').first,
                         lastWeight.toString());
@@ -251,24 +210,6 @@ class _HomePageState extends State<HomePage> {
             ],
           );
         });
-  }
-
-  void weightValueChanged(String value) {
-    if (value.isNotEmpty) {
-      if (value.split('.').length <= 2) {
-        if (value.substring(0, 1) == '.') {
-          value = '0$value';
-        } else if (value.substring(value.length - 1) == '.') {
-          value = '${value}0';
-        }
-      } else {
-        value = lastWeight.toString();
-      }
-    } else {
-      value = '0';
-    }
-    setState(() => lastWeight = double.parse(value));
-    print(lastWeight);
   }
 
   void setDate() async {

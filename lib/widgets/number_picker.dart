@@ -434,21 +434,6 @@ class _NumberPickerDialogControllerState extends State<NumberPickerDialog> {
     }
   }
 
-  // void setDate() async {
-  //   Navigator.pop(context);
-  //   final picked = await showDatePicker(
-  //       context: context,
-  //       initialDate: selectedDate,
-  //       firstDate: DateTime(2015),
-  //       lastDate: DateTime.now());
-  //   if (![null, DateTime.now()].contains(picked)) {
-  //     setState(() {
-  //       selectedDate = picked;
-  //     });
-  //   }
-  //   await buildAddDialog(context);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -457,15 +442,6 @@ class _NumberPickerDialogControllerState extends State<NumberPickerDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       content: _buildNumberPicker(),
       actions: [
-        // TextButton(
-        // onPressed: () => setDate(),
-        // child: Text(
-        Text(
-          selectedDate.toLocal().toString().split(' ').first,
-          style: TextStyle(
-              color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),
-        ),
-        // ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(widget.cancelLabel),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weight/pages/graphic_page.dart';
@@ -39,16 +40,16 @@ class _HomeViewState extends State<HomeView> {
         items: [
           BottomNavigationBarItem(
               label: 'Grafik',
-              icon: Icon(Icons.insert_chart_outlined),
-              activeIcon: Icon(Icons.insert_chart)),
+              icon: Icon(CupertinoIcons.chart_bar_square),
+              activeIcon: Icon(CupertinoIcons.chart_bar_square_fill)),
           BottomNavigationBarItem(
               label: 'Liste',
-              icon: Icon(Icons.list_alt),
-              activeIcon: Icon(Icons.view_list)),
+              icon: Icon(CupertinoIcons.square_list),
+              activeIcon: Icon(CupertinoIcons.square_list_fill)),
           BottomNavigationBarItem(
               label: 'Profil',
-              icon: Icon(Icons.person_pin_outlined),
-              activeIcon: Icon(Icons.person_pin_sharp))
+              icon: Icon(CupertinoIcons.person),
+              activeIcon: Icon(CupertinoIcons.person_fill))
         ],
       ),
     );
