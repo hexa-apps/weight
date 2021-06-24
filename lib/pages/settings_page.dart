@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../core/services/weights.dart';
-import '../widgets/number_picker.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -10,7 +9,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   double goalWeight = 95.0;
-  NumberPicker decimalNumberPicker;
 
   @override
   void initState() {
@@ -27,30 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {});
   }
 
-  void _handleValueChanged(num value) {
-    if (value != null) {
-      //`setState` will notify the framework that the internal state of this object has changed.
-      setState(() => goalWeight = value);
-    }
-  }
-
-  void _handleValueChangedExternally(num value) {
-    if (value != null) {
-      print(value);
-      setState(() => goalWeight = value);
-      setGoalWeight(value);
-      decimalNumberPicker.animateDecimalAndInteger(value);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    decimalNumberPicker = NumberPicker.decimal(
-        initialValue: goalWeight,
-        minValue: 0,
-        maxValue: 300,
-        decimalPlaces: 1,
-        onChanged: _handleValueChanged);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -70,28 +46,11 @@ class _SettingsPageState extends State<SettingsPage> {
             Text('Genel'),
             ListTile(
               title: Text('Hedeflenen kilo'),
-              onTap: () => _showDoubleDialog(),
+              // onTap: () => _showDoubleDialog(),
             )
           ],
         ),
       ),
     );
-  }
-
-  Future _showDoubleDialog() async {
-    await showDialog<double>(
-      context: context,
-      builder: (BuildContext context) {
-        return NumberPickerDialog.decimal(
-          confirmLabel: 'Tamam',
-          cancelLabel: 'Vazgeç',
-          minValue: 0,
-          maxValue: 300,
-          decimalPlaces: 1,
-          initialDoubleValue: goalWeight,
-          title: Text('Hedef'),
-        );
-      },
-    ).then(_handleValueChangedExternally);
   }
 }

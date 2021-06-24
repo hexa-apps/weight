@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weight/pages/weight_edit_page.dart';
-import 'package:weight/widgets/number_picker.dart';
 import '../core/services/weights.dart';
 
 class HomePage extends StatefulWidget {
@@ -100,13 +98,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurpleAccent,
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => WeightEditPage(
-            goalWeight: goalWeight,
-            // earthQuake: eq,
-            // mapIndex: mapIndex,
-          ),
-        )),
+        onPressed: () => null,
         child: Icon(Icons.add, color: Colors.white),
       ),
     );
