@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weight/pages/graphic_page.dart';
 import 'package:weight/pages/home_page.dart';
+import 'package:weight/pages/list_page.dart';
 import 'package:weight/pages/settings_page.dart';
 
 class HomeView extends StatefulWidget {
@@ -12,7 +13,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int currentPage = 0;
-  final pageOptions = [GraphicPage(), HomePage(), SettingsPage()];
+  final pageOptions = [HomePage(), GraphicPage(), ListPage(), SettingsPage()];
 
   @override
   void initState() {
@@ -32,12 +33,16 @@ class _HomeViewState extends State<HomeView> {
             currentPage = index;
           })
         },
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xffFAFCFE),
         unselectedItemColor: Colors.blueGrey[200],
-        selectedItemColor: Colors.white,
-        showSelectedLabels: true,
+        selectedItemColor: Colors.deepPurpleAccent,
+        showSelectedLabels: false,
         currentIndex: currentPage,
         items: [
+          BottomNavigationBarItem(
+              label: 'Anasayfa',
+              icon: Icon(CupertinoIcons.house),
+              activeIcon: Icon(CupertinoIcons.house_fill)),
           BottomNavigationBarItem(
               label: 'Grafik',
               icon: Icon(CupertinoIcons.chart_bar_square),

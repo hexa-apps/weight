@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:weight/core/services/weights.dart';
+import '../core/class/time_series_weight.dart';
+import '../core/services/weights.dart';
 
 class GraphicPage extends StatefulWidget {
   @override
@@ -164,6 +165,8 @@ class _GraphicPageState extends State<GraphicPage> {
                                   primaryMeasureAxis: charts.NumericAxisSpec(
                                       tickProviderSpec:
                                           charts.BasicNumericTickProviderSpec(
+                                              desiredMinTickCount: 5,
+                                              desiredMaxTickCount: 15,
                                               zeroBound: false)),
                                   defaultRenderer: charts.LineRendererConfig(),
                                   customSeriesRenderers: [
@@ -254,11 +257,4 @@ class _GraphicPageState extends State<GraphicPage> {
         ..setAttribute(charts.rendererIdKey, 'customPoint'),
     ];
   }
-}
-
-class TimeSeriesWeight {
-  final DateTime time;
-  final double sales;
-
-  TimeSeriesWeight(this.time, this.sales);
 }

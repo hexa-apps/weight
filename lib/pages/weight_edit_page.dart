@@ -1,12 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weight/core/services/weights.dart';
-import 'package:weight/pages/home_page.dart';
 import '../widgets/number_picker.dart';
 
 class WeightEditPage extends StatefulWidget {
   final double goalWeight;
-  WeightEditPage({Key key, this.goalWeight}) : super(key: key);
+  @required
+  final bool fromEdit;
+  final String date;
+  WeightEditPage({
+    Key key,
+    this.goalWeight,
+    this.fromEdit,
+    this.date,
+  }) : super(key: key);
 
   @override
   _WeightEditPageState createState() => _WeightEditPageState();
@@ -14,20 +23,58 @@ class WeightEditPage extends StatefulWidget {
 
 class _WeightEditPageState extends State<WeightEditPage> {
   NumberPicker decimalNumberPicker;
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
   double widgetWeight;
+  // var alala;
 
   @override
   void initState() {
+    // getGoalWeight();
     widgetWeight = widget.goalWeight;
+    selectedDate =
+        widget.date != null ? DateTime.tryParse(widget.date) : DateTime.now();
     super.initState();
   }
 
+  // Future getGoalWeight() async {
+  //   var box = Hive.box('weights');
+  //   if (box.isNotEmpty) {
+  //     var keys = box.keys.toList()
+  //       ..sort((a, b) => DateTime(
+  //               int.parse(b.split('-').first),
+  //               int.parse(b.split('-').elementAt(1)),
+  //               int.parse(b.split('-').last))
+  //           .compareTo(DateTime(
+  //               int.parse(a.split('-').first),
+  //               int.parse(a.split('-').elementAt(1)),
+  //               int.parse(a.split('-').last))));
+  //     alala = keys;
+  //   } else {
+  //     alala = [];
+  //   }
+  //   setState(() {});
+  // }
+
   void _saveButton() {
+    if (widget.fromEdit) {
+      deleteWeight(widget.date);
+    }
     setWeight(selectedDate.toLocal().toString().split(' ').first,
         widgetWeight.toString());
     Navigator.of(context).pop();
   }
+
+  void _deleteButton() {
+    deleteWeight(widget.date);
+    Navigator.of(context).pop();
+  }
+
+  // bool _predicate(DateTime day) {
+  //   if (alala.contains(day.toLocal().toString().split(' ').first)) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +93,26 @@ class _WeightEditPageState extends State<WeightEditPage> {
             elevation: 0,
             centerTitle: true,
             actions: [
+              widget.fromEdit
+                  ? Container(
+                      margin: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color: Colors.redAccent.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(16)),
+                      child: IconButton(
+                          icon: Icon(CupertinoIcons.trash_fill),
+                          onPressed: () => _deleteButton()),
+                    )
+                  : Container(),
               Container(
                 margin: EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                    color: Colors.white30,
+                    color: Colors.lightGreenAccent.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(16)),
                 child: IconButton(
                     icon: Icon(CupertinoIcons.checkmark_alt),
                     onPressed: () => _saveButton()),
-              )
+              ),
             ],
           ),
           body: Container(
@@ -81,10 +139,12 @@ class _WeightEditPageState extends State<WeightEditPage> {
                       Text(selectedDate.toLocal().toString().split(' ').first),
                   onTap: () async {
                     final picked = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate,
-                        firstDate: DateTime(2015),
-                        lastDate: DateTime.now());
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime(2015),
+                      lastDate: DateTime.now().add(Duration(days: 7)),
+                      // selectableDayPredicate: _predicate
+                    );
                     if (![null, DateTime.now()].contains(picked)) {
                       setState(() {
                         selectedDate = picked;

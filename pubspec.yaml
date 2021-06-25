@@ -19,6 +19,7 @@ dependencies:
   google_fonts: ^2.0.0
   flutter_spinkit: ^5.0.0
   charts_flutter: ^0.10.0
+  sleek_circular_slider: ^2.0.0
 
 dev_dependencies:
   flutter_test:
