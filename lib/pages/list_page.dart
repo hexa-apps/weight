@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:weight/pages/weight_edit_page.dart';
+import 'package:weight/widgets/history_card.dart';
 import 'package:weight/widgets/number_picker.dart';
 import '../core/services/weights.dart';
 
@@ -66,13 +67,19 @@ class _ListPageState extends State<ListPage> {
                             .elementAt(1)
                             .map<double>((weight) => double.parse(weight))
                             .toList();
+                        var bmiList = getBMI(1.88, weightData.first);
+                        var initialValue = getInitialValue(
+                            weightData.last, weightData.first, goalWeight);
                         return ListView(children: [
                           SizedBox(height: 8),
                           SleekCircularSlider(
                               min: 0,
                               max: 100,
-                              initialValue: getInitialValue(weightData.last,
-                                  goalWeight, weightData.first),
+                              initialValue: initialValue < 0
+                                  ? 0
+                                  : initialValue > 100
+                                      ? 100
+                                      : initialValue,
                               innerWidget: (double value) {
                                 return Center(
                                     child: Column(
@@ -82,13 +89,13 @@ class _ListPageState extends State<ListPage> {
                                       '${weightData.first} kg',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
+                                          color: Colors.white, fontSize: 24),
                                     ),
                                     Text(
-                                      'BMI ${weightData.first} | Normal',
+                                      'BMI ${bmiList.first} | ${bmiList.elementAt(1)}',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          color: Colors.white38, fontSize: 8),
+                                          color: Colors.white38, fontSize: 12),
                                     ),
                                     TextButton(
                                       onPressed: () => Navigator.of(context)
@@ -102,7 +109,7 @@ class _ListPageState extends State<ListPage> {
                                       child: Text(
                                         '+ Add weight',
                                         style: TextStyle(
-                                            fontSize: 8,
+                                            fontSize: 12,
                                             color: Colors.tealAccent),
                                       ),
                                     )
@@ -110,6 +117,8 @@ class _ListPageState extends State<ListPage> {
                                 ));
                               },
                               appearance: CircularSliderAppearance(
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.60,
                                   customColors: CustomSliderColors(
                                       dotColor: Colors.tealAccent,
                                       progressBarColors: [
@@ -123,51 +132,24 @@ class _ListPageState extends State<ListPage> {
                                   angleRange: 360,
                                   customWidths: CustomSliderWidths(
                                       shadowWidth: 0,
-                                      progressBarWidth: 8,
-                                      trackWidth: 8)),
+                                      progressBarWidth: 16,
+                                      trackWidth: 16)),
                               onChange: null),
-                          Card(
-                            margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            color: Colors.white10,
-                            child: Column(children: [
-                              Text(
-                                'Title',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'inner title',
-                                        style: TextStyle(
-                                            fontSize: 8, color: Colors.white38),
-                                      ),
-                                      Text('inner content',
-                                          style: TextStyle(color: Colors.white))
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'inner title',
-                                        style: TextStyle(
-                                            fontSize: 8, color: Colors.white38),
-                                      ),
-                                      Text('inner content',
-                                          style: TextStyle(color: Colors.white))
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ]),
-                          )
+                          HistoryCard(
+                            title: 'Başlık',
+                            subtitle_first: 'Alt başlık',
+                            subtitle_second: 'Alt başlık',
+                            content_first: 'içerik',
+                            content_second: 'içerik',
+                          ),
+                          HistoryCard(
+                            title: 'Başlık',
+                            subtitle_first: 'Alt başlık',
+                            subtitle_second: 'Alt başlık',
+                            content_first: 'içerik',
+                            content_second: 'içerik',
+                          ),
                         ]);
-                        // Column(children: [
-
-                        // ]);
                         // ListView.separated(
                         //     itemBuilder: (context, index) {
                         //       var dates = snapshot.data.first;
