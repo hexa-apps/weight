@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:weight/pages/weight_edit_page.dart';
 import 'package:weight/widgets/number_picker.dart';
 import '../core/services/weights.dart';
@@ -18,27 +19,27 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFAFCFE),
-      appBar: AppBar(
-        // centerTitle: true,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Overview',
-              style: TextStyle(fontSize: 10,color: Colors.grey[600]),
-            ),
-            Text(
-              'History',
-              style: TextStyle(color: Colors.grey[900]),
-            ),
-          ],
-        ),
-        backgroundColor: Color(0xffFAFCFE),
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   // centerTitle: true,
+      //   title: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: [
+      //       Text(
+      //         'Overview',
+      //         style: TextStyle(fontSize: 10,color: Colors.grey[600]),
+      //       ),
+      //       Text(
+      //         'History',
+      //         style: TextStyle(color: Colors.grey[900]),
+      //       ),
+      //     ],
+      //   ),
+      //   backgroundColor: Color(0xff010D33),
+      //   elevation: 0,
+      // ),
       body: Center(
         child: Container(
-            color: Color(0xffFAFCFE),
+            color: Color(0xff010D33),
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
               future: getWeights(true),
@@ -61,56 +62,162 @@ class _ListPageState extends State<ListPage> {
                     } else {
                       if (snapshot.data.first.length > 0) {
                         goalWeight = snapshot.data.last.first;
-                        return ListView.separated(
-                            itemBuilder: (context, index) {
-                              var dates = snapshot.data.first;
-                              var weightData = snapshot.data.elementAt(1);
-                              var difference = index == dates.length - 1
-                                  ? 0.0
-                                  : double.parse(weightData.elementAt(index)) -
-                                      double.parse(
-                                          weightData.elementAt(index + 1));
-                              var differenceColor = difference == 0
-                                  ? Colors.black
-                                  : difference > 0
-                                      ? Colors.red
-                                      : Colors.green;
-                              return ListTile(
-                                dense: true,
-                                onTap: () => Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          WeightEditPage(
-                                        fromEdit: true,
-                                        goalWeight: double.parse(
-                                            weightData.elementAt(index)),
-                                        date: dates.elementAt(index),
+                        List<double> weightData = snapshot.data
+                            .elementAt(1)
+                            .map<double>((weight) => double.parse(weight))
+                            .toList();
+                        return ListView(children: [
+                          SizedBox(height: 8),
+                          SleekCircularSlider(
+                              min: 0,
+                              max: 100,
+                              initialValue: getInitialValue(weightData.last,
+                                  goalWeight, weightData.first),
+                              innerWidget: (double value) {
+                                return Center(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${weightData.first} kg',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    Text(
+                                      'BMI ${weightData.first} | Normal',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white38, fontSize: 8),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                WeightEditPage(
+                                                    fromEdit: false,
+                                                    goalWeight: goalWeight),
+                                          ))
+                                          .then((value) => setState(() {})),
+                                      child: Text(
+                                        '+ Add weight',
+                                        style: TextStyle(
+                                            fontSize: 8,
+                                            color: Colors.tealAccent),
                                       ),
-                                    ))
-                                    .then((value) => setState(() {})),
-                                // buildEditDialog(
-                                //     context,
-                                //     dates.elementAt(index),
-                                //     weightData.elementAt(index)),
-                                tileColor: Colors.deepPurpleAccent.withOpacity(0.1),
-                                leading: Icon(
-                                  Icons.star,
-                                  color: index == dates.length - 1
-                                      ? Colors.deepPurpleAccent
-                                      : Color(0xffFAFCFE),
-                                  size: 36,
-                                ),
-                                title: Text(weightData.elementAt(index)),
-                                subtitle: Text(dates.elementAt(index)),
-                                trailing: Text(
-                                  '${difference.toStringAsFixed(1)} kg',
-                                  style: TextStyle(color: differenceColor),
-                                ),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) => Divider(),
-                            itemCount: snapshot.data.first.length);
+                                    )
+                                  ],
+                                ));
+                              },
+                              appearance: CircularSliderAppearance(
+                                  customColors: CustomSliderColors(
+                                      dotColor: Colors.tealAccent,
+                                      progressBarColors: [
+                                        Colors.tealAccent,
+                                        Colors.lightBlueAccent,
+                                        Colors.deepPurpleAccent[700],
+                                      ],
+                                      trackColor:
+                                          Colors.grey[200].withOpacity(0.1)),
+                                  startAngle: 180,
+                                  angleRange: 360,
+                                  customWidths: CustomSliderWidths(
+                                      shadowWidth: 0,
+                                      progressBarWidth: 8,
+                                      trackWidth: 8)),
+                              onChange: null),
+                          Card(
+                            margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                            color: Colors.white10,
+                            child: Column(children: [
+                              Text(
+                                'Title',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'inner title',
+                                        style: TextStyle(
+                                            fontSize: 8, color: Colors.white38),
+                                      ),
+                                      Text('inner content',
+                                          style: TextStyle(color: Colors.white))
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        'inner title',
+                                        style: TextStyle(
+                                            fontSize: 8, color: Colors.white38),
+                                      ),
+                                      Text('inner content',
+                                          style: TextStyle(color: Colors.white))
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ]),
+                          )
+                        ]);
+                        // Column(children: [
+
+                        // ]);
+                        // ListView.separated(
+                        //     itemBuilder: (context, index) {
+                        //       var dates = snapshot.data.first;
+                        //       var weightData = snapshot.data.elementAt(1);
+                        //       var difference = index == dates.length - 1
+                        //           ? 0.0
+                        //           : double.parse(weightData.elementAt(index)) -
+                        //               double.parse(
+                        //                   weightData.elementAt(index + 1));
+                        //       var differenceColor = difference == 0
+                        //           ? Colors.black
+                        //           : difference > 0
+                        //               ? Colors.red
+                        //               : Colors.green;
+                        //       return ListTile(
+                        //         dense: true,
+                        //         onTap: () => Navigator.of(context)
+                        //             .push(MaterialPageRoute(
+                        //               builder: (BuildContext context) =>
+                        //                   WeightEditPage(
+                        //                 fromEdit: true,
+                        //                 goalWeight: double.parse(
+                        //                     weightData.elementAt(index)),
+                        //                 date: dates.elementAt(index),
+                        //               ),
+                        //             ))
+                        //             .then((value) => setState(() {})),
+                        //         // buildEditDialog(
+                        //         //     context,
+                        //         //     dates.elementAt(index),
+                        //         //     weightData.elementAt(index)),
+                        //         tileColor: Colors.deepPurpleAccent.withOpacity(0.1),
+                        //         leading: Icon(
+                        //           Icons.star,
+                        //           color: index == dates.length - 1
+                        //               ? Colors.deepPurpleAccent
+                        //               : Color(0xffFAFCFE),
+                        //           size: 36,
+                        //         ),
+                        //         title: Text(weightData.elementAt(index)),
+                        //         subtitle: Text(dates.elementAt(index)),
+                        //         trailing: Text(
+                        //           '${difference.toStringAsFixed(1)} kg',
+                        //           style: TextStyle(color: differenceColor),
+                        //         ),
+                        //       );
+                        //     },
+                        //     separatorBuilder:
+                        //         (BuildContext context, int index) => Divider(),
+                        //     itemCount: snapshot.data.first.length);
                       } else {
                         return Text('Kilo ekle');
                       }
@@ -119,16 +226,16 @@ class _ListPageState extends State<ListPage> {
               },
             )),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurpleAccent,
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  WeightEditPage(fromEdit: false, goalWeight: goalWeight),
-            ))
-            .then((value) => setState(() {})),
-        child: Icon(Icons.add, color: Colors.white),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.deepPurpleAccent,
+      //   onPressed: () => Navigator.of(context)
+      //       .push(MaterialPageRoute(
+      //         builder: (BuildContext context) =>
+      //             WeightEditPage(fromEdit: false, goalWeight: goalWeight),
+      //       ))
+      //       .then((value) => setState(() {})),
+      //   child: Icon(Icons.add, color: Colors.white),
+      // ),
     );
   }
 

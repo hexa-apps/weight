@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             appBarTheme: AppBarTheme(brightness: Brightness.dark),
             textTheme:
-                GoogleFonts.nunitoTextTheme(Theme.of(context).textTheme)),
+                GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)),
         debugShowCheckedModeBanner: false,
         title: 'Material App',
         home: SplashPage());

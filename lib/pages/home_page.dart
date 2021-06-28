@@ -17,10 +17,6 @@ class _HomePageState extends State<HomePage> {
   double lastWeight = 95.0;
   double goalWeight = 95.0;
 
-  double _getInitialValue(double first, double last, double goal) {
-    return ((first - last) * 100) / (first - goal);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,11 +146,10 @@ class _HomePageState extends State<HomePage> {
                                                           TextAlign.center,
                                                     ));
                                                   },
-                                                  initialValue:
-                                                      _getInitialValue(
-                                                          weightData.first,
-                                                          goal,
-                                                          weightData.last),
+                                                  initialValue: getInitialValue(
+                                                      weightData.first,
+                                                      goal,
+                                                      weightData.last),
                                                   appearance:
                                                       CircularSliderAppearance(
                                                           customColors:

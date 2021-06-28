@@ -34,13 +34,25 @@ Future<List<List>> getWeights(bool isGoal) async {
     keys.forEach((element) {
       values.add(box.toMap()[element]);
     });
-    return [keys, values, [goal]];
+    return [
+      keys,
+      values,
+      [goal]
+    ];
   } else {
-    return [[], values, [goal]];
+    return [
+      [],
+      values,
+      [goal]
+    ];
   }
 }
 
 void deleteWeight(String key) async {
   var box = Hive.box('weights');
   await box.delete(key);
+}
+
+double getInitialValue(double first, double last, double goal) {
+  return ((first - last) * 100) / (first - goal);
 }

@@ -15,15 +15,23 @@ class _GraphicPageState extends State<GraphicPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
-          centerTitle: true,
-          title: Text(
-            'ŞÜŞKO',
-            style: TextStyle(color: Colors.white),
+          centerTitle: false,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Overview',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+              Text(
+                'Home',
+                style: TextStyle(color: Colors.grey[900]),
+              ),
+            ],
           ),
-          backgroundColor: Colors.deepPurpleAccent,
+          backgroundColor: Color(0xffFAFCFE),
         ),
         body: Container(
-            color: Colors.white,
+            color: Color(0xffFAFCFE),
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
               future: getWeights(true),
@@ -60,57 +68,99 @@ class _GraphicPageState extends State<GraphicPage> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Başlangıç',
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 4),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8),
                                           ),
-                                          Text(
-                                            weightData.last.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                          color: Colors.blue[600]
+                                              .withOpacity(0.85),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Başlangıç',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
+                                            Text(
+                                              weightData.last.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Şimdiki',
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 4),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8),
                                           ),
-                                          Text(
-                                            weightData.first.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                          color: Colors.deepPurpleAccent
+                                              .withOpacity(0.85),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Şimdiki',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
+                                            Text(
+                                              weightData.first.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Hedef',
-                                            style:
-                                                TextStyle(color: Colors.black),
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 4),
+                                        margin:
+                                            EdgeInsets.symmetric(horizontal: 4),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(8),
                                           ),
-                                          Text(
-                                            goal.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
+                                          color:
+                                              Colors.red[600].withOpacity(0.85),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Hedef',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
+                                            Text(
+                                              goal.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -178,6 +228,15 @@ class _GraphicPageState extends State<GraphicPage> {
                                   behaviors: [charts.PanAndZoomBehavior()],
                                 ),
                               ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 12),
+                                  child: TextButton(
+                                    onPressed: () => print('ll'),
+                                    child: Text('sss'),
+                                  )),
                             ),
                           ],
                         );
