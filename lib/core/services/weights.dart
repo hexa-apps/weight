@@ -11,7 +11,7 @@ void setGoalWeight(double value) async {
   await box.put('goalWeight', value);
 }
 
-Future<List<List>> getWeights(bool isGoal) async {
+Future<List<List>> getWeights(bool isGoal, int time) async {
   var goal = 0.0;
   var box = Hive.box('weights');
   var values = [];
@@ -23,6 +23,7 @@ Future<List<List>> getWeights(bool isGoal) async {
     }
   }
   if (box.isNotEmpty) {
+    var now = DateTime.now();
     var keys = box.keys.toList()
       ..sort((a, b) => DateTime(
               int.parse(b.split('-').first),
@@ -32,18 +33,72 @@ Future<List<List>> getWeights(bool isGoal) async {
               int.parse(a.split('-').first),
               int.parse(a.split('-').elementAt(1)),
               int.parse(a.split('-').last))));
-    keys.forEach((element) {
-      values.add(box.toMap()[element]);
-    });
-    return [
-      keys,
-      values,
-      [goal]
-    ];
+    // keys.forEach((element) {
+    //   values.add(box.toMap()[element]);
+    // });
+    if (time == 0) {
+      var now_1w = now.subtract(Duration(days: 7));
+      var listOfHistory = [];
+      listOfHistory.addAll(keys.where((element) {
+        final date = DateTime(
+            int.parse(element.split('-').first),
+            int.parse(element.split('-').elementAt(1)),
+            int.parse(element.split('-').last));
+        return now_1w.isBefore(date);
+      }).toList());
+      listOfHistory.forEach((element) {
+        values.add(box.toMap()[element]);
+      });
+      return [
+        listOfHistory,
+        values,
+        ['Weekly'],
+        [goal]
+      ];
+    } else if (time == 1) {
+      var now_1m = DateTime(now.year, now.month - 1, now.day);
+      var listOfHistory = [];
+      listOfHistory.addAll(keys.where((element) {
+        final date = DateTime(
+            int.parse(element.split('-').first),
+            int.parse(element.split('-').elementAt(1)),
+            int.parse(element.split('-').last));
+        return now_1m.isBefore(date);
+      }).toList());
+      listOfHistory.forEach((element) {
+        values.add(box.toMap()[element]);
+      });
+      return [
+        listOfHistory,
+        values,
+        ['Monthly'],
+        [goal]
+      ];
+    } else {
+      var now_1y = DateTime(now.year - 1, now.month, now.day);
+      var listOfHistory = [];
+      listOfHistory.addAll(keys.where((element) {
+        final date = DateTime(
+            int.parse(element.split('-').first),
+            int.parse(element.split('-').elementAt(1)),
+            int.parse(element.split('-').last));
+        return now_1y.isBefore(date);
+      }).toList());
+      listOfHistory.forEach((element) {
+        values.add(box.toMap()[element]);
+      });
+      return [
+        keys,
+        values,
+        ['Annual'],
+        [goal]
+      ];
+    }
   } else {
     return [
       [],
       values,
+      ['null'],
       [goal]
     ];
   }

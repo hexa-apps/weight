@@ -4,6 +4,7 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:weight/pages/weight_edit_page.dart';
 import 'package:weight/widgets/history_card.dart';
 import 'package:weight/widgets/number_picker.dart';
+import 'package:weight/widgets/pace_card.dart';
 import '../core/services/weights.dart';
 
 class ListPage extends StatefulWidget {
@@ -43,19 +44,22 @@ class _ListPageState extends State<ListPage> {
             color: Color(0xff010D33),
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(true),
+              future: getWeights(true, 3),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
                   case ConnectionState.waiting:
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        Padding(
-                            padding: EdgeInsets.only(top: 24),
-                            child: Text('Yükleniyor...'))
-                      ],
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Padding(
+                              padding: EdgeInsets.only(top: 24),
+                              child: Text('Yükleniyor...'))
+                        ],
+                      ),
                     );
                   default:
                     if (snapshot.hasError) {
@@ -126,8 +130,7 @@ class _ListPageState extends State<ListPage> {
                                         Colors.lightBlueAccent,
                                         Colors.deepPurpleAccent[700],
                                       ],
-                                      trackColor:
-                                          Colors.grey[200].withOpacity(0.1)),
+                                      trackColor: Color(0xFF0A1640)),
                                   startAngle: 180,
                                   angleRange: 360,
                                   customWidths: CustomSliderWidths(
@@ -136,19 +139,27 @@ class _ListPageState extends State<ListPage> {
                                       trackWidth: 16)),
                               onChange: null),
                           HistoryCard(
-                            title: 'Başlık',
-                            subtitle_first: 'Alt başlık',
-                            subtitle_second: 'Alt başlık',
+                            title: 'Your progress',
+                            subtitle_first:
+                                'Progress today\n${DateTime.now().toLocal().toString().split(' ').first}',
+                            subtitle_second: 'Compared with\n1  week ago',
                             content_first: 'içerik',
                             content_second: 'içerik',
                           ),
                           HistoryCard(
-                            title: 'Başlık',
-                            subtitle_first: 'Alt başlık',
-                            subtitle_second: 'Alt başlık',
-                            content_first: 'içerik',
-                            content_second: 'içerik',
+                            title: 'Your goals',
+                            subtitle_first: 'I want to weight\n',
+                            subtitle_second: 'You need to lose\n',
+                            content_first: '${goalWeight.toString()} kg',
+                            content_second:
+                                '${(goalWeight - weightData.first).toStringAsFixed(1)} kg',
                           ),
+                          PaceCard(
+                            title: 'Good job John',
+                            sentence:
+                                "if you keep such pace you'll hit your goal",
+                            time: 'by June 20, 2020',
+                          )
                         ]);
                         // ListView.separated(
                         //     itemBuilder: (context, index) {
@@ -208,16 +219,6 @@ class _ListPageState extends State<ListPage> {
               },
             )),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.deepPurpleAccent,
-      //   onPressed: () => Navigator.of(context)
-      //       .push(MaterialPageRoute(
-      //         builder: (BuildContext context) =>
-      //             WeightEditPage(fromEdit: false, goalWeight: goalWeight),
-      //       ))
-      //       .then((value) => setState(() {})),
-      //   child: Icon(Icons.add, color: Colors.white),
-      // ),
     );
   }
 

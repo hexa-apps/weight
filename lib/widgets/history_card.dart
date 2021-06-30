@@ -18,41 +18,65 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-      color: Colors.white10,
-      child: Column(children: [
-        Text(
-          title ?? 'Title',
-          style: TextStyle(color: Colors.white),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                Text(
-                  subtitle_first ?? 'subtitle',
-                  style: TextStyle(fontSize: 8, color: Colors.white38),
-                ),
-                Text(content_first ?? 'subcontent',
-                    style: TextStyle(color: Colors.white))
-              ],
+    return Container(
+      constraints:
+          BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.25),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
+        color: Color(0xFF0A1640),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(
+              title ?? 'Title',
+              style: TextStyle(color: Colors.white, fontSize: 14),
             ),
-            Column(
-              children: [
-                Text(
-                  subtitle_second ?? 'subtitle',
-                  style: TextStyle(fontSize: 8, color: Colors.white38),
-                ),
-                Text(content_second ?? 'subcontent',
-                    style: TextStyle(color: Colors.white))
-              ],
-            ),
-          ],
-        )
-      ]),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      subtitle_first ?? 'subtitle',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 9, color: Colors.white38),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(content_first ?? 'subcontent',
+                        style: TextStyle(color: Colors.white)),
+                  )
+                ],
+              ),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      subtitle_second ?? 'subtitle',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 9,
+                        color: Colors.white38,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(content_second ?? 'subcontent',
+                        style: TextStyle(color: Colors.white)),
+                  )
+                ],
+              ),
+            ],
+          )
+        ]),
+      ),
     );
   }
 }

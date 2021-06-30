@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weight/pages/graphic_page.dart';
+import 'package:weight/pages/history_page.dart';
 // import 'package:weight/pages/home_page.dart';
 import 'package:weight/pages/list_page.dart';
 import 'package:weight/pages/settings_page.dart';
@@ -14,7 +15,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int currentPage = 0;
   final pageOptions = [
-    /*HomePage(),*/ GraphicPage(),
+    /*HomePage(), GraphicPage(),*/
+    HistoryPage(),
     ListPage(),
     SettingsPage()
   ];
@@ -47,17 +49,17 @@ class _HomeViewState extends State<HomeView> {
         showSelectedLabels: true,
         currentIndex: currentPage,
         items: [
+          BottomNavigationBarItem(
+              label: 'History',
+              icon: Icon(CupertinoIcons.gobackward),
+              activeIcon: Icon(CupertinoIcons.gobackward)),
           // BottomNavigationBarItem(
           //     label: 'Anasayfa',
           //     icon: Icon(CupertinoIcons.house),
-          //     activeIcon: Icon(CupertinoIcons.house_fill)),
-          BottomNavigationBarItem(
-              label: 'Anasayfa',
-              icon: Icon(CupertinoIcons.house),
-              activeIcon: Icon(
-                CupertinoIcons.house_fill,
-                color: Colors.greenAccent,
-              )),
+          //     activeIcon: Icon(
+          //       CupertinoIcons.house_fill,
+          //       color: Colors.greenAccent,
+          //     )),
           BottomNavigationBarItem(
               label: 'Liste',
               icon: Icon(CupertinoIcons.square_list),

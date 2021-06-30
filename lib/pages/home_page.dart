@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import '../core/class/time_series_weight.dart';
 import 'package:weight/pages/weight_edit_page.dart';
-import 'package:weight/widgets/number_picker.dart';
 import '../core/services/weights.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -54,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             color: Color(0xffFAFCFE),
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(true),
+              future: getWeights(true, 3),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:

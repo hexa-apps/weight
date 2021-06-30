@@ -34,7 +34,7 @@ class _GraphicPageState extends State<GraphicPage> {
             color: Color(0xffFAFCFE),
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
-              future: getWeights(true),
+              future: getWeights(true, 3),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
