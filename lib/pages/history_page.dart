@@ -1,12 +1,13 @@
 import 'package:customtogglebuttons/customtogglebuttons.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/services/weights.dart';
 
 import '../widgets/chart_card.dart';
-import '../widgets/story_card.dart';
 import '../widgets/summary_card.dart';
 import '../core/class/time_series_weight.dart';
+import 'weight_edit_page.dart';
 
 class HistoryPage extends StatefulWidget {
   HistoryPage({Key key}) : super(key: key);
@@ -129,16 +130,38 @@ class _HistoryPageState extends State<HistoryPage> {
                                 difference: (weightData.last - weightData.first)
                                     .toStringAsFixed(1),
                               ),
-                              StoryCard(
-                                width: MediaQuery.of(context).size.width * 0.85,
-                                title: storyTitle,
-                                dates: dates.length > 7
-                                    ? dates.getRange(0, 7).toList()
-                                    : dates,
-                                weights: dates.length > 7
-                                    ? weightData.getRange(0, 7).toList()
-                                    : weightData,
-                              )
+                              Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
+                                  margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                                  constraints: BoxConstraints(
+                                      minHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.25),
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      color: Color(0xFF0A1640),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: getStory(
+                                                dates.length > 7
+                                                    ? dates
+                                                        .getRange(0, 7)
+                                                        .toList()
+                                                    : dates,
+                                                storyTitle,
+                                                dates.length > 7
+                                                    ? weightData
+                                                        .getRange(0, 7)
+                                                        .toList()
+                                                    : weightData)),
+                                      )))
                             ]);
                           } else {
                             return Text('Kilo ekle');
@@ -200,6 +223,55 @@ class _HistoryPageState extends State<HistoryPage> {
                 //   ChartCard(sampleData: [])
                 // ]),
                 )));
+  }
+
+  List<Widget> getStory(dates, title, weights) {
+    List<Widget> widgets;
+    widgets = [
+      Container(
+        margin: EdgeInsets.only(top: 16),
+        child: Text(
+          '$title Story',
+          style: TextStyle(color: Colors.white),
+        ),
+      )
+    ];
+    dates.forEach((element) {
+      widgets.add(ListTile(
+        dense: true,
+        minVerticalPadding: 1,
+        contentPadding: EdgeInsets.symmetric(horizontal: 12),
+        subtitle: Text(
+          element.toString(),
+          style: TextStyle(color: Colors.white30, fontSize: 10),
+        ),
+        title: Text(
+          '${weights.elementAt(dates.indexOf(element)).toStringAsFixed(1)} kg',
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+        trailing: Icon(
+          CupertinoIcons.right_chevron,
+          color: Colors.white30,
+        ),
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (BuildContext context) => WeightEditPage(
+                fromEdit: true,
+                goalWeight: weights.elementAt(dates.indexOf(element)),
+                date: dates.elementAt(dates.indexOf(element)),
+              ),
+            ))
+            .then((value) => setState(() {})),
+      ));
+    });
+    widgets.add(TextButton(
+      onPressed: () => print('all'),
+      child: Text(
+        'See all history',
+        style: TextStyle(color: Colors.tealAccent),
+      ),
+    ));
+    return widgets;
   }
 
   List<charts.Series<TimeSeriesWeight, DateTime>> _createSampleData(
