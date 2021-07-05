@@ -2,6 +2,7 @@ import 'package:customtogglebuttons/customtogglebuttons.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weight/pages/history_list_page.dart';
 import '../core/services/weights.dart';
 
 import '../widgets/chart_card.dart';
@@ -265,7 +266,12 @@ class _HistoryPageState extends State<HistoryPage> {
       ));
     });
     widgets.add(TextButton(
-      onPressed: () => print('all'),
+      onPressed: () => Navigator.of(context)
+          .push(MaterialPageRoute(
+              builder: (BuildContext context) => HistoryListPage(
+                    title: title,
+                  )))
+          .then((value) => setState(() {})),
       child: Text(
         'See all history',
         style: TextStyle(color: Colors.tealAccent),
