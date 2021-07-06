@@ -96,7 +96,10 @@ class _HistoryPageState extends State<HistoryPage> {
                               CircularProgressIndicator(),
                               Padding(
                                   padding: EdgeInsets.only(top: 24),
-                                  child: Text('Loading...'))
+                                  child: Text(
+                                    'Loading...',
+                                    style: TextStyle(color: Colors.white),
+                                  ))
                             ],
                           ),
                         );
@@ -104,9 +107,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         if (snapshot.hasError) {
                           return Text('Hata: ${snapshot.error}');
                         } else {
+                          var goal = snapshot.data.last.first;
                           if (snapshot.data.first.length > 0) {
                             var dates = snapshot.data.first;
-                            var goal = snapshot.data.last.first;
                             List<double> weightData = snapshot.data
                                 .elementAt(1)
                                 .map<double>((weight) => double.parse(weight))
@@ -165,7 +168,32 @@ class _HistoryPageState extends State<HistoryPage> {
                                       )))
                             ]);
                           } else {
-                            return Text('Kilo ekle');
+                            return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                child: Center(
+                                  child: TextButton(
+                                      onPressed: () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                WeightEditPage(
+                                                    fromEdit: false,
+                                                    goalWeight: goal),
+                                          ))
+                                          .then((value) => setState(() {})),
+                                      child: Container(
+                                        padding: EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          color: Color(0xFF0A1640),
+                                        ),
+                                        child: Text(
+                                          '+  Add your weight',
+                                          style: TextStyle(color: Colors.tealAccent),
+                                        ),
+                                      )),
+                                ));
                           }
                         }
                     }

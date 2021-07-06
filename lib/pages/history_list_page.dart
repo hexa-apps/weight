@@ -24,7 +24,7 @@ class _HistoryListPageState extends State<HistoryListPage> {
               backgroundColor: Color(0xff010D33),
               elevation: 0,
               centerTitle: true,
-              title: Text(widget.title),
+              title: Text('All Weights'),
             ),
             body: Center(
               child: Container(

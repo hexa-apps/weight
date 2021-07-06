@@ -74,6 +74,19 @@ class _ListPageState extends State<ListPage> {
                         var bmiList = getBMI(1.88, weightData.first);
                         var initialValue = getInitialValue(
                             weightData.last, weightData.first, goalWeight);
+                        var isThereToday = snapshot.data.first.contains(
+                            DateTime.now()
+                                .toLocal()
+                                .toString()
+                                .split(' ')
+                                .first);
+                        var isThereWeek = snapshot.data.first.contains(
+                            DateTime.now()
+                                .subtract(Duration(days: 7))
+                                .toLocal()
+                                .toString()
+                                .split(' ')
+                                .first);
                         return ListView(children: [
                           SizedBox(height: 8),
                           SleekCircularSlider(
@@ -143,8 +156,35 @@ class _ListPageState extends State<ListPage> {
                             subtitle_first:
                                 'Progress today\n${DateTime.now().toLocal().toString().split(' ').first}',
                             subtitle_second: 'Compared with\n1  week ago',
-                            content_first: 'içerik',
-                            content_second: 'içerik',
+                            content_first: isThereToday
+                                ? weightData
+                                        .elementAt(snapshot.data.first.indexOf(
+                                            DateTime.now()
+                                                .toLocal()
+                                                .toString()
+                                                .split(' ')
+                                                .first))
+                                        .toString() +
+                                    ' kg'
+                                : '- kg',
+                            content_second: isThereToday && isThereWeek
+                                ? (weightData.elementAt(snapshot.data.first
+                                                .indexOf(DateTime.now()
+                                                    .toLocal()
+                                                    .toString()
+                                                    .split(' ')
+                                                    .first)) -
+                                            weightData.elementAt(snapshot
+                                                .data.first
+                                                .indexOf(DateTime.now()
+                                                    .subtract(Duration(days: 7))
+                                                    .toLocal()
+                                                    .toString()
+                                                    .split(' ')
+                                                    .first)))
+                                        .toString() +
+                                    ' kg'
+                                : '- kg',
                           ),
                           HistoryCard(
                             title: 'Your goals',
@@ -154,12 +194,12 @@ class _ListPageState extends State<ListPage> {
                             content_second:
                                 '${(goalWeight - weightData.first).toStringAsFixed(1)} kg',
                           ),
-                          PaceCard(
-                            title: 'Good job John',
-                            sentence:
-                                "if you keep such pace you'll hit your goal",
-                            time: 'by June 20, 2020',
-                          )
+                          // PaceCard(
+                          //   title: 'Good job John',
+                          //   sentence:
+                          //       "if you keep such pace you'll hit your goal",
+                          //   time: 'by June 20, 2020',
+                          // )
                         ]);
                         // ListView.separated(
                         //     itemBuilder: (context, index) {
