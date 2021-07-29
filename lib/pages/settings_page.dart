@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:weight/core/data/constants.dart';
 import '../core/services/weights.dart';
 import '../widgets/number_picker.dart';
 
@@ -61,17 +62,17 @@ class _SettingsPageState extends State<SettingsPage> {
           style: TextStyle(color: Colors.white),
         ),
         elevation: 0,
-        backgroundColor: Color(0xff010D33),
+        backgroundColor: darkColors['secondary'],
       ),
       body: Container(
         padding: EdgeInsets.only(top: 8),
-        color: Color(0xff010D33),
+        color: darkColors['secondary'],
         child: Center(
           child: Container(
             margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Color(0xFF0A1640),
+              color: darkColors['primary'],
             ),
             child: ListView(
               children: [

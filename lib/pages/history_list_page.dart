@@ -31,7 +31,7 @@ class _HistoryListPageState extends State<HistoryListPage> {
                   color: Color(0xff010D33),
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: FutureBuilder(
-                      future: getWeights(true, 2),
+                      future: getWeights(true, 0),
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:

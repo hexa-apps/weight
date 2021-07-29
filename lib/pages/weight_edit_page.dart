@@ -36,25 +36,6 @@ class _WeightEditPageState extends State<WeightEditPage> {
     super.initState();
   }
 
-  // Future getGoalWeight() async {
-  //   var box = Hive.box('weights');
-  //   if (box.isNotEmpty) {
-  //     var keys = box.keys.toList()
-  //       ..sort((a, b) => DateTime(
-  //               int.parse(b.split('-').first),
-  //               int.parse(b.split('-').elementAt(1)),
-  //               int.parse(b.split('-').last))
-  //           .compareTo(DateTime(
-  //               int.parse(a.split('-').first),
-  //               int.parse(a.split('-').elementAt(1)),
-  //               int.parse(a.split('-').last))));
-  //     alala = keys;
-  //   } else {
-  //     alala = [];
-  //   }
-  //   setState(() {});
-  // }
-
   void _saveButton() {
     if (widget.fromEdit) {
       deleteWeight(widget.date);
@@ -69,13 +50,6 @@ class _WeightEditPageState extends State<WeightEditPage> {
     Navigator.of(context).pop();
   }
 
-  // bool _predicate(DateTime day) {
-  //   if (alala.contains(day.toLocal().toString().split(' ').first)) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
   @override
   Widget build(BuildContext context) {
     decimalNumberPicker = NumberPicker.decimal(
@@ -84,6 +58,7 @@ class _WeightEditPageState extends State<WeightEditPage> {
         maxValue: 300,
         decimalPlaces: 1,
         onChanged: _handleValueChanged);
+    var title = widget.fromEdit ? 'Edit' : 'Add';
     return Container(
         color: Color(0xff010D33),
         child: SafeArea(
@@ -92,28 +67,7 @@ class _WeightEditPageState extends State<WeightEditPage> {
             backgroundColor: Color(0xff010D33),
             elevation: 0,
             centerTitle: true,
-            // actions: [
-            //   widget.fromEdit
-            //       ? Container(
-            //           margin: EdgeInsets.all(6),
-            //           decoration: BoxDecoration(
-            //               color: Colors.redAccent.withOpacity(0.3),
-            //               borderRadius: BorderRadius.circular(16)),
-            //           child: IconButton(
-            //               icon: Icon(CupertinoIcons.trash_fill),
-            //               onPressed: () => _deleteButton()),
-            //         )
-            //       : Container(),
-            //   Container(
-            //     margin: EdgeInsets.all(6),
-            //     decoration: BoxDecoration(
-            //         color: Colors.lightGreenAccent.withOpacity(0.4),
-            //         borderRadius: BorderRadius.circular(16)),
-            //     child: IconButton(
-            //         icon: Icon(CupertinoIcons.checkmark_alt),
-            //         onPressed: () => _saveButton()),
-            //   ),
-            // ],
+            title: Text('$title Weight'),
           ),
           body: Container(
             color: Color(0xff010D33),
@@ -126,8 +80,6 @@ class _WeightEditPageState extends State<WeightEditPage> {
                   color: Color(0xFF0A1640),
                 ),
                 child: ListView(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 8,

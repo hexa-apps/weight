@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:weight/core/data/constants.dart';
 
 class SummaryCard extends StatelessWidget {
   final String initial;
   final String current;
   final String difference;
+  final Color textColor;
 
-  const SummaryCard({Key key, this.initial, this.current, this.difference})
+  const SummaryCard(
+      {Key key, this.initial, this.current, this.difference, this.textColor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(12, 0, 12, 8),
+      margin: EdgeInsets.fromLTRB(12, 8, 12, 0),
       constraints:
           BoxConstraints(minHeight: MediaQuery.of(context).size.height * 0.25),
       child: Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          color: Color(0xFF0A1640),
+          color: darkColors['primary'],
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               'Summary',
@@ -52,7 +55,8 @@ class SummaryCard extends StatelessWidget {
                   children: [
                     Text(
                       'Current',
-                      style: TextStyle(color: Colors.tealAccent, fontSize: 10),
+                      style: TextStyle(
+                          color: darkColors['textSecondary'], fontSize: 10),
                     ),
                     SizedBox(height: 4),
                     Text(
@@ -76,7 +80,7 @@ class SummaryCard extends StatelessWidget {
                     SizedBox(height: 4),
                     Text(
                       difference != null ? difference + ' kg' : '- kg',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: textColor, fontSize: 18),
                     )
                   ],
                 )),

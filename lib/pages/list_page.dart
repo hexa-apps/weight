@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:weight/core/data/constants.dart';
 import 'package:weight/pages/weight_edit_page.dart';
 import 'package:weight/widgets/history_card.dart';
-import 'package:weight/widgets/number_picker.dart';
-import 'package:weight/widgets/pace_card.dart';
 import '../core/services/weights.dart';
 
 class ListPage extends StatefulWidget {
@@ -21,27 +19,9 @@ class _ListPageState extends State<ListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFAFCFE),
-      // appBar: AppBar(
-      //   // centerTitle: true,
-      //   title: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: [
-      //       Text(
-      //         'Overview',
-      //         style: TextStyle(fontSize: 10,color: Colors.grey[600]),
-      //       ),
-      //       Text(
-      //         'History',
-      //         style: TextStyle(color: Colors.grey[900]),
-      //       ),
-      //     ],
-      //   ),
-      //   backgroundColor: Color(0xff010D33),
-      //   elevation: 0,
-      // ),
       body: Center(
         child: Container(
-            color: Color(0xff010D33),
+            color: darkColors['secondary'],
             padding: EdgeInsets.symmetric(horizontal: 5),
             child: FutureBuilder(
               future: getWeights(true, 3),
@@ -127,7 +107,7 @@ class _ListPageState extends State<ListPage> {
                                         '+ Add weight',
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color: Colors.tealAccent),
+                                            color: darkColors['textSecondary']),
                                       ),
                                     )
                                   ],
@@ -137,13 +117,13 @@ class _ListPageState extends State<ListPage> {
                                   size:
                                       MediaQuery.of(context).size.width * 0.60,
                                   customColors: CustomSliderColors(
-                                      dotColor: Colors.tealAccent,
+                                      dotColor: darkColors['textSecondary'],
                                       progressBarColors: [
-                                        Colors.tealAccent,
+                                        darkColors['textSecondary'],
                                         Colors.lightBlueAccent,
                                         Colors.deepPurpleAccent[700],
                                       ],
-                                      trackColor: Color(0xFF0A1640)),
+                                      trackColor: darkColors['primary']),
                                   startAngle: 180,
                                   angleRange: 360,
                                   customWidths: CustomSliderWidths(
@@ -194,63 +174,7 @@ class _ListPageState extends State<ListPage> {
                             content_second:
                                 '${(goalWeight - weightData.first).toStringAsFixed(1)} kg',
                           ),
-                          // PaceCard(
-                          //   title: 'Good job John',
-                          //   sentence:
-                          //       "if you keep such pace you'll hit your goal",
-                          //   time: 'by June 20, 2020',
-                          // )
                         ]);
-                        // ListView.separated(
-                        //     itemBuilder: (context, index) {
-                        //       var dates = snapshot.data.first;
-                        //       var weightData = snapshot.data.elementAt(1);
-                        //       var difference = index == dates.length - 1
-                        //           ? 0.0
-                        //           : double.parse(weightData.elementAt(index)) -
-                        //               double.parse(
-                        //                   weightData.elementAt(index + 1));
-                        //       var differenceColor = difference == 0
-                        //           ? Colors.black
-                        //           : difference > 0
-                        //               ? Colors.red
-                        //               : Colors.green;
-                        //       return ListTile(
-                        //         dense: true,
-                        //         onTap: () => Navigator.of(context)
-                        //             .push(MaterialPageRoute(
-                        //               builder: (BuildContext context) =>
-                        //                   WeightEditPage(
-                        //                 fromEdit: true,
-                        //                 goalWeight: double.parse(
-                        //                     weightData.elementAt(index)),
-                        //                 date: dates.elementAt(index),
-                        //               ),
-                        //             ))
-                        //             .then((value) => setState(() {})),
-                        //         // buildEditDialog(
-                        //         //     context,
-                        //         //     dates.elementAt(index),
-                        //         //     weightData.elementAt(index)),
-                        //         tileColor: Colors.deepPurpleAccent.withOpacity(0.1),
-                        //         leading: Icon(
-                        //           Icons.star,
-                        //           color: index == dates.length - 1
-                        //               ? Colors.deepPurpleAccent
-                        //               : Color(0xffFAFCFE),
-                        //           size: 36,
-                        //         ),
-                        //         title: Text(weightData.elementAt(index)),
-                        //         subtitle: Text(dates.elementAt(index)),
-                        //         trailing: Text(
-                        //           '${difference.toStringAsFixed(1)} kg',
-                        //           style: TextStyle(color: differenceColor),
-                        //         ),
-                        //       );
-                        //     },
-                        //     separatorBuilder:
-                        //         (BuildContext context, int index) => Divider(),
-                        //     itemCount: snapshot.data.first.length);
                       } else {
                         return Text('Kilo ekle');
                       }
@@ -260,120 +184,5 @@ class _ListPageState extends State<ListPage> {
             )),
       ),
     );
-  }
-
-  Future buildEditDialog(BuildContext context, String date, String weight) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              date,
-            ),
-            titleTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurpleAccent,
-                fontSize: 24),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    deleteWeight(date);
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Sil',
-                    style: TextStyle(color: Colors.red),
-                  )),
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'Vazgeç',
-                    style: TextStyle(color: Colors.red),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    // setWeight(date, weightEditController.text);
-                    // setState(() {});
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Tamam',
-                    style: TextStyle(color: Colors.deepPurpleAccent),
-                  )),
-            ],
-          );
-        });
-  }
-
-  Future buildAddDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'Kilo',
-            ),
-            titleTextStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurpleAccent,
-                fontSize: 24),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [],
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () => setDate(),
-                  child: Text(
-                    selectedDate.toLocal().toString().split(' ').first,
-                    style: TextStyle(
-                        color: Colors.deepPurpleAccent,
-                        fontWeight: FontWeight.bold),
-                  )),
-              TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'Vazgeç',
-                    style: TextStyle(color: Colors.red),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    setWeight(
-                        selectedDate.toLocal().toString().split(' ').first,
-                        lastWeight.toString());
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Tamam',
-                    style: TextStyle(color: Colors.deepPurpleAccent),
-                  )),
-            ],
-          );
-        });
-  }
-
-  void setDate() async {
-    Navigator.pop(context);
-    final picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime.now());
-    if (![null, DateTime.now()].contains(picked)) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-    await buildAddDialog(context);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weight/pages/graphic_page.dart';
+import 'package:weight/core/data/constants.dart';
+// import 'package:weight/pages/graphic_page.dart';
 import 'package:weight/pages/history_page.dart';
 // import 'package:weight/pages/home_page.dart';
 import 'package:weight/pages/list_page.dart';
@@ -39,13 +40,9 @@ class _HomeViewState extends State<HomeView> {
             currentPage = index;
           })
         },
-        backgroundColor: Color(0xff020826),
+        backgroundColor: darkColors['secondary'],
         unselectedItemColor: Colors.blueGrey[200].withOpacity(0.35),
-        selectedItemColor: currentPage == 0
-            ? Colors.greenAccent
-            : currentPage == 1
-                ? Colors.orangeAccent
-                : Colors.deepPurpleAccent,
+        selectedItemColor: darkColors['textSecondary'],
         showSelectedLabels: true,
         currentIndex: currentPage,
         items: [

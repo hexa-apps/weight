@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weight/core/data/constants.dart';
 
 class HistoryCard extends StatelessWidget {
   final String title;
@@ -24,7 +25,7 @@ class HistoryCard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-        color: Color(0xFF0A1640),
+        color: darkColors['primary'],
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

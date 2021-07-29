@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weight/core/data/constants.dart';
 
 class PaceCard extends StatelessWidget {
   final String title;
@@ -16,7 +17,7 @@ class PaceCard extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-            color: Color(0xFF0A1640),
+            color: darkColors['primary'],
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(

@@ -2,6 +2,7 @@ import 'package:customtogglebuttons/customtogglebuttons.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weight/core/data/constants.dart';
 import 'package:weight/pages/history_list_page.dart';
 import '../core/services/weights.dart';
 
@@ -23,235 +24,209 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffFAFCFE),
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Color(0xff010D33),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Color(0xFF0A1640),
-                ),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.85,
-                height: 45,
-                child: CustomToggleButtons(
-                  constraints: BoxConstraints(
-                      minWidth: MediaQuery.of(context).size.width * 0.27,
-                      maxWidth: MediaQuery.of(context).size.width * 0.27),
-                  splashColor: Color(0xFF0A1640).withOpacity(0.5),
-                  // borderWidth: 2,
-                  // borderColor: Colors.white,
-                  // selectedBorderColor: Color(0xFF0A1640),
-                  color: Colors.white,
-                  selectedColor: Colors.white,
-                  fillColor: Color(0xff010D33),
-                  renderBorder: false,
-                  // unselectedFillColor: Color(0xFF0A1640),
-                  isSelected: isSelected,
-                  onPressed: (index) {
-                    setState(() {
-                      isSelected = [false, false, false];
-                      isSelected[index] = !isSelected[index];
-                    });
-                  },
-                  children: <Widget>[
-                    Text(
-                      'Week',
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      'Month',
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      'Year',
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+      backgroundColor: Color(0xffFAFCFE),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: darkColors['secondary'],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: darkColors['primary'],
               ),
-            ],
-          ),
-          centerTitle: true,
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: 45,
+              child: CustomToggleButtons(
+                constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.27,
+                    maxWidth: MediaQuery.of(context).size.width * 0.27),
+                splashColor: darkColors['primary'].withOpacity(0.5),
+                color: Colors.white,
+                selectedColor: darkColors['textSecondary'],
+                fillColor: darkColors['secondary'],
+                renderBorder: false,
+                isSelected: isSelected,
+                onPressed: (index) {
+                  setState(() {
+                    isSelected = [false, false, false];
+                    isSelected[index] = !isSelected[index];
+                  });
+                },
+                children: <Widget>[
+                  Text(
+                    'Year',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Month',
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    'Week',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        body: Center(
-            child: Container(
-                color: Color(0xff010D33),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: FutureBuilder(
-                  future: getWeights(true, isSelected.indexOf(true)),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                              Padding(
-                                  padding: EdgeInsets.only(top: 24),
-                                  child: Text(
-                                    'Loading...',
-                                    style: TextStyle(color: Colors.white),
-                                  ))
-                            ],
-                          ),
-                        );
-                      default:
-                        if (snapshot.hasError) {
-                          return Text('Hata: ${snapshot.error}');
-                        } else {
-                          var goal = snapshot.data.last.first;
-                          if (snapshot.data.first.length > 0) {
-                            var dates = snapshot.data.first;
-                            List<double> weightData = snapshot.data
-                                .elementAt(1)
-                                .map<double>((weight) => double.parse(weight))
-                                .toList();
-                            var storyTitle = snapshot.data.elementAt(2).first;
-                            return ListView(children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: ChartCard(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.85,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.55,
-                                  sampleData: _createSampleData(
-                                      dates, weightData, goal),
-                                ),
-                              ),
-                              SummaryCard(
-                                current: weightData.first.toStringAsFixed(1),
-                                initial: weightData.last.toStringAsFixed(1),
-                                difference: (weightData.last - weightData.first)
-                                    .toStringAsFixed(1),
-                              ),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.85,
-                                  margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                                  constraints: BoxConstraints(
-                                      minHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.25),
-                                  child: Card(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
-                                      color: Color(0xFF0A1640),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: getStory(
-                                                dates.length > 7
-                                                    ? dates
-                                                        .getRange(0, 7)
-                                                        .toList()
-                                                    : dates,
-                                                storyTitle,
-                                                dates.length > 7
-                                                    ? weightData
-                                                        .getRange(0, 7)
-                                                        .toList()
-                                                    : weightData)),
-                                      )))
-                            ]);
-                          } else {
-                            return Container(
+        centerTitle: true,
+      ),
+      body: Center(
+          child: Container(
+              color: darkColors['secondary'],
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: FutureBuilder(
+                future: getWeights(true, isSelected.indexOf(true)),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                    case ConnectionState.waiting:
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            Padding(
+                                padding: EdgeInsets.only(top: 24),
+                                child: Text(
+                                  'Loading...',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ],
+                        ),
+                      );
+                    default:
+                      if (snapshot.hasError) {
+                        return Text('Hata: ${snapshot.error}');
+                      } else {
+                        var goal = snapshot.data.last.first;
+                        if (snapshot.data.first.length > 0) {
+                          var dates = snapshot.data.first;
+                          List<double> weightData = snapshot.data
+                              .elementAt(1)
+                              .map<double>((weight) => double.parse(weight))
+                              .toList();
+                          var storyTitle = snapshot.data.elementAt(2).first;
+                          var difference = weightData.first - weightData.last;
+                          return ListView(children: [
+                            SummaryCard(
+                              current: weightData.first.toStringAsFixed(1),
+                              initial: weightData.last.toStringAsFixed(1),
+                              difference: difference.toStringAsFixed(1),
+                              textColor: difference == 0
+                                  ? Colors.white
+                                  : difference > 0
+                                      ? Colors.red
+                                      : Colors.green,
+                            ),
+                            Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height,
-                                child: Center(
-                                  child: TextButton(
-                                      onPressed: () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                WeightEditPage(
-                                                    fromEdit: false,
-                                                    goalWeight: goal),
-                                          ))
-                                          .then((value) => setState(() {})),
-                                      child: Container(
-                                        padding: EdgeInsets.all(16),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          color: Color(0xFF0A1640),
-                                        ),
+                                child: TextButton(
+                                    onPressed: () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              WeightEditPage(
+                                                  fromEdit: false,
+                                                  goalWeight: goal),
+                                        ))
+                                        .then((value) => setState(() {})),
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: darkColors['primary'],
+                                      ),
+                                      child: Center(
                                         child: Text(
-                                          '+  Add your weight',
-                                          style: TextStyle(color: Colors.tealAccent),
+                                          '+  Add current weight',
+                                          style: TextStyle(
+                                              color: darkColors['textSecondary']),
                                         ),
-                                      )),
-                                ));
-                          }
+                                      ),
+                                    ))),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: ChartCard(
+                                width: MediaQuery.of(context).size.width * 0.85,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.55,
+                                sampleData:
+                                    _createSampleData(dates, weightData, goal),
+                              ),
+                            ),
+                            Container(
+                                width: MediaQuery.of(context).size.width * 0.85,
+                                margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                                constraints: BoxConstraints(
+                                    minHeight:
+                                        MediaQuery.of(context).size.height *
+                                            0.25),
+                                child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16)),
+                                    color: darkColors['primary'],
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0),
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: getStory(
+                                              dates.length > 7
+                                                  ? dates
+                                                      .getRange(0, 7)
+                                                      .toList()
+                                                  : dates,
+                                              storyTitle,
+                                              dates.length > 7
+                                                  ? weightData
+                                                      .getRange(0, 7)
+                                                      .toList()
+                                                  : weightData)),
+                                    )))
+                          ]);
+                        } else {
+                          return Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              child: Center(
+                                child: TextButton(
+                                    onPressed: () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              WeightEditPage(
+                                                  fromEdit: false,
+                                                  goalWeight: goal),
+                                        ))
+                                        .then((value) => setState(() {})),
+                                    child: Container(
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: darkColors['primary'],
+                                      ),
+                                      child: Text(
+                                        '+  Add current weight',
+                                        style: TextStyle(
+                                            color: darkColors['textSecondary']),
+                                      ),
+                                    )),
+                              ));
                         }
-                    }
-                  },
-                )
-                // ListView(children: [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       Container(
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(8),
-                //           color: Color(0xFF0A1640),
-                //         ),
-                //         alignment: Alignment.center,
-                //         width: MediaQuery.of(context).size.width * 0.85,
-                //         height: 45,
-                //         child: CustomToggleButtons(
-                //           constraints: BoxConstraints(
-                //               minWidth: MediaQuery.of(context).size.width * 0.27,
-                //               maxWidth: MediaQuery.of(context).size.width * 0.27),
-                //           splashColor: Color(0xFF0A1640).withOpacity(0.5),
-                //           // borderWidth: 2,
-                //           // borderColor: Colors.white,
-                //           // selectedBorderColor: Color(0xFF0A1640),
-                //           color: Colors.white,
-                //           selectedColor: Colors.white,
-                //           fillColor: Color(0xff010D33),
-                //           renderBorder: false,
-                //           // unselectedFillColor: Color(0xFF0A1640),
-                //           isSelected: isSelected,
-                //           onPressed: (index) {
-                //             setState(() {
-                //               isSelected = [false, false, false];
-                //               isSelected[index] = !isSelected[index];
-                //             });
-                //           },
-                //           children: <Widget>[
-                //             Text(
-                //               'Week',
-                //               textAlign: TextAlign.center,
-                //             ),
-                //             Text(
-                //               'Month',
-                //               textAlign: TextAlign.center,
-                //             ),
-                //             Text(
-                //               'Year',
-                //               textAlign: TextAlign.center,
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                //   ChartCard(sampleData: [])
-                // ]),
-                )));
+                      }
+                  }
+                },
+              ))),
+    );
   }
 
   List<Widget> getStory(dates, title, weights) {
@@ -259,9 +234,31 @@ class _HistoryPageState extends State<HistoryPage> {
     widgets = [
       Container(
         margin: EdgeInsets.only(top: 16),
-        child: Text(
-          '$title Story',
-          style: TextStyle(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Text(
+                '$title Story',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(
+                      builder: (BuildContext context) => HistoryListPage(
+                            title: title,
+                          )))
+                  .then((value) => setState(() {})),
+              child: Text(
+                'See all',
+                style:
+                    TextStyle(color: darkColors['textSecondary'], fontSize: 12),
+              ),
+            )
+          ],
         ),
       )
     ];
@@ -293,18 +290,6 @@ class _HistoryPageState extends State<HistoryPage> {
             .then((value) => setState(() {})),
       ));
     });
-    widgets.add(TextButton(
-      onPressed: () => Navigator.of(context)
-          .push(MaterialPageRoute(
-              builder: (BuildContext context) => HistoryListPage(
-                    title: title,
-                  )))
-          .then((value) => setState(() {})),
-      child: Text(
-        'See all history',
-        style: TextStyle(color: Colors.tealAccent),
-      ),
-    ));
     return widgets;
   }
 

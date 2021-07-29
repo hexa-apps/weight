@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:weight/core/class/time_series_weight.dart';
+import 'package:weight/core/data/constants.dart';
 
 class ChartCard extends StatelessWidget {
   final List<charts.Series<TimeSeriesWeight, DateTime>> sampleData;
@@ -19,7 +20,7 @@ class ChartCard extends StatelessWidget {
         child: Card(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            color: Color(0xFF0A1640),
+            color: darkColors['primary'],
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
