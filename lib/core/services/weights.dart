@@ -33,10 +33,17 @@ Future<List<List>> getWeights(bool isGoal, int time) async {
               int.parse(a.split('-').first),
               int.parse(a.split('-').elementAt(1)),
               int.parse(a.split('-').last))));
-    // keys.forEach((element) {
-    //   values.add(box.toMap()[element]);
-    // });
-    if (time == 2) {
+    if (time == 94) {
+      keys.forEach((element) {
+        values.add(box.toMap()[element]);
+      });
+      return [
+        keys,
+        values,
+        ['Annual'],
+        [goal]
+      ];
+    } else if (time == 2) {
       var now_1w = now.subtract(Duration(days: 7));
       var listOfHistory = [];
       listOfHistory.addAll(keys.where((element) {

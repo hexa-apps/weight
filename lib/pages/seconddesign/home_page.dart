@@ -25,14 +25,14 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             'Summary',
             style: TextStyle(
-                color: Color(0xFF263359),
+                color: Color(0xFF263359).withOpacity(0.75),
                 fontWeight: FontWeight.bold,
                 fontSize: 26),
           ),
           elevation: 0,
         ),
         body: FutureBuilder(
-            future: getWeights(true, 0),
+            future: getWeights(true, 94),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
@@ -171,7 +171,10 @@ class _HomePageState extends State<HomePage> {
                               child: ListTile(
                                 leading: Text(
                                   'Add current weight',
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 trailing: Icon(
                                   Icons.add,

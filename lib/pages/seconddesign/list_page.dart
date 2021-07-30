@@ -22,7 +22,7 @@ class _ListPageState extends State<ListPage> {
           title: Text(
             'Weights',
             style: TextStyle(
-                color: Color(0xFF263359),
+                color: Color(0xFF263359).withOpacity(0.75),
                 fontWeight: FontWeight.bold,
                 fontSize: 24),
           ),
@@ -40,7 +40,7 @@ class _ListPageState extends State<ListPage> {
           child: Icon(Icons.add),
         ),
         body: FutureBuilder(
-            future: getWeights(true, 0),
+            future: getWeights(true, 94),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:

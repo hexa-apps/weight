@@ -60,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(
           'Settings',
           style: TextStyle(
-              color: Color(0xFF263359),
+              color: Color(0xFF263359).withOpacity(0.75),
               fontWeight: FontWeight.bold,
               fontSize: 24),
         ),
@@ -70,6 +70,15 @@ class _SettingsPageState extends State<SettingsPage> {
         margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
         child: ListView(
           children: [
+            Card(
+              color: Color(0xFFF0F9FF),
+              elevation: 0,
+              child: ListTile(
+                title: Text(
+                  'Profile',
+                ),
+              ),
+            ),
             Card(
               elevation: 0,
               // shadowColor: Colors.grey.withOpacity(0.25),
@@ -85,7 +94,178 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 onTap: () => _showDoubleDialog(),
               ),
-            )
+            ),
+            Card(
+              color: Color(0xFFF0F9FF),
+              elevation: 0,
+              child: ListTile(
+                title: Text('Reminder'),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Reminder',
+                    style: TextStyle(color: Colors.deepOrange, fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.alarm_fill,
+                  color: Colors.deepOrange,
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              color: Color(0xFFF0F9FF),
+              elevation: 0,
+              child: ListTile(
+                title: Text('Restore'),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Import CSV',
+                    style: TextStyle(color: Colors.teal, fontSize: 16)),
+                trailing: RotatedBox(
+                  quarterTurns: 2,
+                  child: Icon(
+                    CupertinoIcons.share_solid,
+                    color: Colors.teal,
+                  ),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Export CSV',
+                    style: TextStyle(color: Color(0xFF2F68FF), fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.share_solid,
+                  color: Color(0xFF2F68FF),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              color: Color(0xFFF0F9FF),
+              elevation: 0,
+              child: ListTile(
+                title: Text('Delete'),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Remove history',
+                    style: TextStyle(color: Colors.red, fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.delete_solid,
+                  color: Colors.red,
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              color: Color(0xFFF0F9FF),
+              elevation: 0,
+              child: ListTile(
+                title: Text(
+                  'About',
+                ),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Suggestions',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.mail_solid,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Share with friends',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: Icon(
+                  Icons.share,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Rate/Comment',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.captions_bubble_fill,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Other apps',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.app_badge_fill,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => {},
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 16),
+              child: Card(
+                color: Color(0xFFF0F9FF),
+                elevation: 0,
+                child: Center(
+                  child: Text(
+                    'Weight Tracker 0.0.1',
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
