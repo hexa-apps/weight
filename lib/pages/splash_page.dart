@@ -62,7 +62,7 @@ class _SplashPageState extends State<SplashPage> {
           //   child: Image.asset('assets/images/splash.jpeg'),
           // ),
           SizedBox(height: 20),
-          SpinKitChasingDots(color: Colors.deepPurpleAccent[700]),
+          SpinKitChasingDots(color: Color(0xFF2F68FF)),
         ],
       ))),
     );

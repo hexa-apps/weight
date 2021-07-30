@@ -1,11 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:weight/core/data/constants.dart';
-// import 'package:weight/pages/graphic_page.dart';
-// import 'package:weight/pages/history_page.dart';
-// import 'package:weight/pages/home_page.dart';
-// import 'package:weight/pages/list_page.dart';
 import 'package:weight/pages/seconddesign/home_page.dart';
 import 'package:weight/pages/seconddesign/list_page.dart';
 import 'package:weight/pages/settings_page.dart';
@@ -17,14 +12,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int currentPage = 0;
-  final pageOptions = [
-    /*HomePage(), GraphicPage(),*/
-    // HistoryPage(),
-    HomePage(),
-    ListPage(),
-    ListPage(),
-    SettingsPage()
-  ];
+  final pageOptions = [HomePage(), ListPage(), SettingsPage()];
 
   @override
   void initState() {
@@ -45,8 +33,8 @@ class _HomeViewState extends State<HomeView> {
           })
         },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        unselectedItemColor: Color(0xFFBBBDC8),
+        backgroundColor: Color(0xFFF0F9FF),
+        unselectedItemColor: Color(0xFFB7B8C1),
         selectedItemColor: Color(0xFF2F68FF),
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -59,10 +47,6 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
             label: 'Liste',
             icon: Icon(CupertinoIcons.square_list_fill),
-          ),
-          BottomNavigationBarItem(
-            label: 'Grafik',
-            icon: Icon(CupertinoIcons.chart_bar_square_fill),
           ),
           BottomNavigationBarItem(
               label: 'Profil', icon: Icon(CupertinoIcons.person_fill))

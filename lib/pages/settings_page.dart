@@ -54,41 +54,39 @@ class _SettingsPageState extends State<SettingsPage> {
         decimalPlaces: 1,
         onChanged: _handleValueChanged);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFF0F9FF),
       appBar: AppBar(
-        centerTitle: false,
+        backgroundColor: Color(0xFFF0F9FF),
         title: Text(
           'Settings',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Color(0xFF263359),
+              fontWeight: FontWeight.bold,
+              fontSize: 24),
         ),
         elevation: 0,
-        backgroundColor: darkColors['secondary'],
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 8),
-        color: darkColors['secondary'],
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: darkColors['primary'],
-            ),
-            child: ListView(
-              children: [
-                ListTile(
-                  dense: true,
-                  title: Text('Goal weight',
-                      style: TextStyle(color: Colors.white)),
-                  trailing: Icon(
-                    CupertinoIcons.right_chevron,
-                    color: Colors.white30,
-                  ),
-                  onTap: () => _showDoubleDialog(),
-                )
-              ],
-            ),
-          ),
+        margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+        child: ListView(
+          children: [
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Goal weight',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: Icon(
+                  CupertinoIcons.right_chevron,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => _showDoubleDialog(),
+              ),
+            )
+          ],
         ),
       ),
     );
