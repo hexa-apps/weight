@@ -82,21 +82,26 @@ class _ListPageState extends State<ListPage> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: ListTile(
-                                      leading: weightData.elementAt(index) ==
-                                              weightData.elementAt(index) + 1
+                                      leading: index == dates.length - 1
                                           ? CircleAvatar(
-                                              backgroundColor: Colors.blueGrey,
+                                              backgroundColor:
+                                                  Color(0xFF2F68FF),
                                               foregroundColor: Colors.white,
-                                              child: Icon(Icons.remove),
-                                            )
-                                          : index == dates.length - 1
+                                              child: Icon(
+                                                Icons.star,
+                                              ))
+                                          : weightData
+                                                      .elementAt(index)
+                                                      .toStringAsFixed(1) ==
+                                                  (weightData
+                                                          .elementAt(index + 1))
+                                                      .toStringAsFixed(1)
                                               ? CircleAvatar(
                                                   backgroundColor:
-                                                      Color(0xFF2F68FF),
+                                                      Colors.blueGrey,
                                                   foregroundColor: Colors.white,
-                                                  child: Icon(
-                                                    Icons.star,
-                                                  ))
+                                                  child: Icon(Icons.remove),
+                                                )
                                               : weightData.elementAt(index) >
                                                       weightData
                                                           .elementAt(index + 1)
