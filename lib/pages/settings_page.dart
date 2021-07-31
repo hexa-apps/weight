@@ -76,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListTile(
                 title: Text(
                   'Profile',
+                  style: TextStyle(fontSize: 14),
                 ),
               ),
             ),
@@ -99,7 +100,10 @@ class _SettingsPageState extends State<SettingsPage> {
               color: Color(0xFFF0F9FF),
               elevation: 0,
               child: ListTile(
-                title: Text('Reminder'),
+                title: Text(
+                  'Settings',
+                  style: TextStyle(fontSize: 14),
+                ),
               ),
             ),
             Card(
@@ -117,54 +121,60 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: () => {},
               ),
             ),
-            Card(
-              color: Color(0xFFF0F9FF),
-              elevation: 0,
-              child: ListTile(
-                title: Text('Restore'),
-              ),
-            ),
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                dense: true,
-                title: Text('Import CSV',
-                    style: TextStyle(color: Colors.teal, fontSize: 16)),
-                trailing: RotatedBox(
-                  quarterTurns: 2,
-                  child: Icon(
-                    CupertinoIcons.share_solid,
-                    color: Colors.teal,
-                  ),
-                ),
-                onTap: () => {},
-              ),
-            ),
-            Card(
-              elevation: 0,
-              // shadowColor: Colors.grey.withOpacity(0.25),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: ListTile(
-                dense: true,
-                title: Text('Export CSV',
-                    style: TextStyle(color: Color(0xFF2F68FF), fontSize: 16)),
-                trailing: Icon(
-                  CupertinoIcons.share_solid,
-                  color: Color(0xFF2F68FF),
-                ),
-                onTap: () => {},
-              ),
-            ),
-            Card(
-              color: Color(0xFFF0F9FF),
-              elevation: 0,
-              child: ListTile(
-                title: Text('Delete'),
-              ),
-            ),
+            // Card(
+            //   color: Color(0xFFF0F9FF),
+            //   elevation: 0,
+            //   child: ListTile(
+            //     title: Text(
+            //       'Restore',
+            //       style: TextStyle(fontSize: 14),
+            //     ),
+            //   ),
+            // ),
+            // Card(
+            //   elevation: 0,
+            //   shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.all(Radius.circular(10))),
+            //   child: ListTile(
+            //     dense: true,
+            //     title: Text('Import CSV',
+            //         style: TextStyle(color: Colors.teal, fontSize: 16)),
+            //     trailing: RotatedBox(
+            //       quarterTurns: 2,
+            //       child: Icon(
+            //         CupertinoIcons.share_solid,
+            //         color: Colors.teal,
+            //       ),
+            //     ),
+            //     onTap: () => {},
+            //   ),
+            // ),
+            // Card(
+            //   elevation: 0,
+            //   // shadowColor: Colors.grey.withOpacity(0.25),
+            //   shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.all(Radius.circular(10))),
+            //   child: ListTile(
+            //     dense: true,
+            //     title: Text('Export CSV',
+            //         style: TextStyle(color: Color(0xFF2F68FF), fontSize: 16)),
+            //     trailing: Icon(
+            //       CupertinoIcons.share_solid,
+            //       color: Color(0xFF2F68FF),
+            //     ),
+            //     onTap: () => {},
+            //   ),
+            // ),
+            // Card(
+            //   color: Color(0xFFF0F9FF),
+            //   elevation: 0,
+            //   child: ListTile(
+            //     title: Text(
+            //       'Delete',
+            //       style: TextStyle(fontSize: 14),
+            //     ),
+            //   ),
+            // ),
             Card(
               elevation: 0,
               // shadowColor: Colors.grey.withOpacity(0.25),
@@ -178,7 +188,29 @@ class _SettingsPageState extends State<SettingsPage> {
                   CupertinoIcons.delete_solid,
                   color: Colors.red,
                 ),
-                onTap: () => {},
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                          title: Text('Clear weights'),
+                          content: Text(
+                              'All weight entries will be clear. Are you sure?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('No',
+                                  style: TextStyle(color: Colors.green)),
+                            ),
+                            TextButton(
+                              onPressed: () =>
+                                  {deleteWeights(), Navigator.pop(context)},
+                              child: Text(
+                                'Yes',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                          elevation: 0,
+                        )),
               ),
             ),
             Card(
@@ -187,6 +219,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: ListTile(
                 title: Text(
                   'About',
+                  style: TextStyle(fontSize: 14),
                 ),
               ),
             ),

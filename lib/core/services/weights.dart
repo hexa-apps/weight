@@ -11,6 +11,11 @@ void setGoalWeight(double value) async {
   await box.put('goalWeight', value);
 }
 
+void deleteWeights() {
+  var box = Hive.box('weights');
+  box.clear();
+}
+
 Future<List<List>> getWeights(bool isGoal, int time) async {
   var goal = 0.0;
   var box = Hive.box('weights');

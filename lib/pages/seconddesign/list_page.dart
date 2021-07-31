@@ -149,29 +149,32 @@ class _ListPageState extends State<ListPage> {
                       );
                     } else {
                       return Center(
-                        child: Card(
-                          color: Color(0xFF2F68FF).withOpacity(0.75),
-                          elevation: 0,
-                          // shadowColor: Colors.grey.withOpacity(0.25),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: ListTile(
-                            leading: Text(
-                              'Add current weight',
-                              style: TextStyle(color: Colors.white),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: Card(
+                            color: Color(0xFF2F68FF).withOpacity(0.75),
+                            elevation: 0,
+                            // shadowColor: Colors.grey.withOpacity(0.25),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: ListTile(
+                              leading: Text(
+                                'Add current weight',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              trailing: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                              onTap: () => Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        WeightEditPage(
+                                            fromEdit: false, goalWeight: 50),
+                                  ))
+                                  .then((value) => setState(() {})),
                             ),
-                            trailing: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            onTap: () => Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      WeightEditPage(
-                                          fromEdit: false, goalWeight: 50),
-                                ))
-                                .then((value) => setState(() {})),
                           ),
                         ),
                       );
