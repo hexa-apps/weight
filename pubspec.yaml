@@ -21,6 +21,8 @@ dependencies:
   charts_flutter: ^0.10.0
   sleek_circular_slider: ^2.0.0
   customtogglebuttons: ^0.0.5
+  url_launcher: ^6.0.9
+  share_plus: ^2.1.4
 
 dev_dependencies:
   flutter_test:

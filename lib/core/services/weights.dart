@@ -1,6 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+String getGender() {
+  var box = Hive.box('genderBox');
+  if (box.isEmpty) {
+    box.put('gender', 'male');
+    return 'male';
+  }
+  return box.get('gender');
+}
+
+void setGender(int index) {
+  var box = Hive.box('genderBox');
+  if (index == 0) {
+    box.put('gender', 'male');
+  } else if (index == 1) {
+    box.put('gender', 'female');
+  }
+}
+
+int getAge() {
+  var box = Hive.box('ageBox');
+  if (box.isEmpty) {
+    box.put('age', 25);
+    return 25;
+  }
+  return box.get('age');
+}
+
+void setAge(int age) {
+  var box = Hive.box('ageBox');
+  box.put('age', age);
+}
+
+int getHeight() {
+  var box = Hive.box('heightBox');
+  if (box.isEmpty) {
+    box.put('height', 170);
+    return 170;
+  }
+  return box.get('height');
+}
+
+void setHeight(int height) {
+  var box = Hive.box('heightBox');
+  box.put('height', height);
+}
+
 void deleteWeight(String key) async {
   var box = Hive.box('weights');
   await box.delete(key);

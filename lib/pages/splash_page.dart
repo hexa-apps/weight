@@ -16,8 +16,11 @@ class _SplashPageState extends State<SplashPage> {
     await Hive.openBox('loginState');
     await Hive.openBox('weights');
     await Hive.openBox('goal');
+    await Hive.openBox('genderBox');
+    await Hive.openBox('ageBox');
+    await Hive.openBox('heightBox');
     var box = Hive.box('loginState');
-    var status = await box.get('loginStatus');
+    var status = box.get('loginStatus');
     await box.close();
     Timer(Duration(seconds: 3), () {
       if (status == 1) {

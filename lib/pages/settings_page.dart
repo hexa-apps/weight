@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:weight/core/services/my_flutter_app_icons.dart';
 import '../core/services/weights.dart';
 import '../widgets/number_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -11,24 +13,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   double goalWeight;
+  int age;
+  int height;
   NumberPicker decimalNumberPicker;
-  var isSelected = [true, false];
-
-  void _handleValueChanged(num value) {
-    if (value != null) {
-      //`setState` will notify the framework that the internal state of this object has changed.
-      setState(() => goalWeight = value);
-    }
-  }
-
-  void _handleValueChangedExternally(num value) {
-    if (value != null) {
-      print(value);
-      setState(() => goalWeight = value);
-      setGoalWeight(value);
-      decimalNumberPicker.animateDecimalAndInteger(value);
-    }
-  }
+  NumberPicker intNumberPickerAge;
+  NumberPicker intNumberPickerHeight;
+  var isSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +28,16 @@ class _SettingsPageState extends State<SettingsPage> {
         maxValue: 300,
         decimalPlaces: 1,
         onChanged: _handleValueChanged);
+    intNumberPickerAge = NumberPicker.integer(
+        initialValue: getAge(),
+        minValue: 0,
+        maxValue: 150,
+        onChanged: _handleValueChangedAge);
+    intNumberPickerHeight = NumberPicker.integer(
+        initialValue: getHeight(),
+        minValue: 0,
+        maxValue: 250,
+        onChanged: _handleValueChangedHeight);
     return Scaffold(
       backgroundColor: Color(0xFFF0F9FF),
       appBar: AppBar(
@@ -77,16 +77,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 trailing: ToggleButtons(
                   borderColor: Colors.white,
                   selectedBorderColor: Colors.white,
-                  isSelected: isSelected,
-                  onPressed: (index) {
+                  isSelected: isSelectedFunction(),
+                  onPressed: (int index) {
+                    setGender(index);
                     setState(() {
                       isSelected = [false, false];
                       isSelected[index] = !isSelected[index];
                     });
                   },
                   children: [
-                    Icon(MyFlutterApp.male, color: Colors.blue,),
-                    Icon(MyFlutterApp.female, color: Colors.red,),
+                    Icon(
+                      MyFlutterApp.male,
+                      color: Colors.blue,
+                    ),
+                    Icon(
+                      MyFlutterApp.female,
+                      color: Colors.red,
+                    ),
                   ],
                 ),
               ),
@@ -98,8 +105,43 @@ class _SettingsPageState extends State<SettingsPage> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: ListTile(
                 dense: true,
+                title: Text('Age',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                subtitle: Text(getAge().toString()),
+                trailing: Icon(
+                  CupertinoIcons.right_chevron,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => _showDoubleDialogAge(),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Height',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                subtitle: Text(getHeight().toString()),
+                trailing: Icon(
+                  CupertinoIcons.right_chevron,
+                  color: Color(0xFF263359),
+                ),
+                onTap: () => _showDoubleDialogHeight(),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
                 title: Text('Goal weight',
                     style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                subtitle: Text(getGoalWeigth().toStringAsFixed(1)),
                 trailing: Icon(
                   CupertinoIcons.right_chevron,
                   color: Color(0xFF263359),
@@ -122,12 +164,14 @@ class _SettingsPageState extends State<SettingsPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: ListTile(
+                enabled: false,
                 dense: true,
                 title: Text('Reminder',
-                    style: TextStyle(color: Colors.deepOrange, fontSize: 16)),
+                    style: TextStyle(
+                        color: Colors.grey /*deepOrange*/, fontSize: 16)),
                 trailing: Icon(
                   CupertinoIcons.alarm_fill,
-                  color: Colors.deepOrange,
+                  color: Colors.grey[350] /*deepOrange*/,
                 ),
                 onTap: () => {},
               ),
@@ -247,7 +291,13 @@ class _SettingsPageState extends State<SettingsPage> {
                   CupertinoIcons.mail_solid,
                   color: Color(0xFF263359),
                 ),
-                onTap: () => {},
+                onTap: () {
+                  var emailLaunchUri = Uri(
+                      scheme: 'mailto',
+                      path: 'hexagameapps@gmail.com',
+                      queryParameters: {'subject': 'Weight Tracker (0.0.1)'});
+                  _launchURL(emailLaunchUri.toString());
+                },
               ),
             ),
             Card(
@@ -263,7 +313,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   Icons.share,
                   color: Color(0xFF263359),
                 ),
-                onTap: () => {},
+                onTap: () => Share.share(
+                    'WeightTracker - https://play.google.com/store/apps/details?id=com.hexaapps.weight',
+                    subject: 'Kilo takibi ile daha zayıf ol!'),
               ),
             ),
             Card(
@@ -279,7 +331,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   CupertinoIcons.captions_bubble_fill,
                   color: Color(0xFF263359),
                 ),
-                onTap: () => {},
+                onTap: () => _launchURL(
+                    'https://play.google.com/store/apps/details?id=com.hexaapps.weight'),
               ),
             ),
             Card(
@@ -295,7 +348,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   CupertinoIcons.app_badge_fill,
                   color: Color(0xFF263359),
                 ),
-                onTap: () => {},
+                onTap: () => _launchURL(
+                    'https://play.google.com/store/apps/dev?id=6243426129705745004'),
               ),
             ),
             Container(
@@ -316,6 +370,21 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  void _launchURL(_url) async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
+
+  List isSelectedFunction() {
+    var gender = getGender();
+    if (gender == 'male') {
+      isSelected = [true, false];
+    } else if (gender == 'female') {
+      isSelected = [false, true];
+    }
+    setState(() {});
+    return isSelected;
+  }
+
   Future _showDoubleDialog() async {
     await showDialog<double>(
       context: context,
@@ -327,9 +396,89 @@ class _SettingsPageState extends State<SettingsPage> {
           maxValue: 300,
           decimalPlaces: 1,
           initialDoubleValue: getGoalWeigth(),
-          title: Text('Goal'),
+          title: Text('Goal (kg)'),
         );
       },
     ).then(_handleValueChangedExternally);
+  }
+
+  void _handleValueChanged(num value) {
+    if (value != null) {
+      //`setState` will notify the framework that the internal state of this object has changed.
+      setState(() => goalWeight = value);
+    }
+  }
+
+  void _handleValueChangedExternally(num value) {
+    if (value != null) {
+      print(value);
+      setState(() => goalWeight = value);
+      setGoalWeight(value);
+      decimalNumberPicker.animateDecimalAndInteger(value);
+    }
+  }
+
+  Future _showDoubleDialogHeight() async {
+    await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return NumberPickerDialog.integer(
+          confirmLabel: 'OK',
+          cancelLabel: 'Cancel',
+          minValue: 0,
+          maxValue: 250,
+          initialIntegerValue: getHeight(),
+          title: Text('Height (cm)'),
+        );
+      },
+    ).then(_handleValueChangedExternallyHeight);
+  }
+
+  void _handleValueChangedExternallyHeight(num value) {
+    if (value != null) {
+      print(value);
+      setState(() => height = value);
+      setHeight(value);
+      intNumberPickerHeight.animateInt(value);
+    }
+  }
+
+  void _handleValueChangedHeight(num value) {
+    if (value != null) {
+      //`setState` will notify the framework that the internal state of this object has changed.
+      setState(() => height = value);
+    }
+  }
+
+  Future _showDoubleDialogAge() async {
+    await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return NumberPickerDialog.integer(
+          confirmLabel: 'OK',
+          cancelLabel: 'Cancel',
+          minValue: 0,
+          maxValue: 150,
+          initialIntegerValue: getAge(),
+          title: Text('Age'),
+        );
+      },
+    ).then(_handleValueChangedExternallyAge);
+  }
+
+  void _handleValueChangedExternallyAge(num value) {
+    if (value != null) {
+      print(value);
+      setState(() => age = value);
+      setAge(value);
+      intNumberPickerAge.animateInt(value);
+    }
+  }
+
+  void _handleValueChangedAge(num value) {
+    if (value != null) {
+      //`setState` will notify the framework that the internal state of this object has changed.
+      setState(() => age = value);
+    }
   }
 }
