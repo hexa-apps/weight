@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:weight/core/data/constants.dart';
 import '../core/services/weights.dart';
 import '../widgets/number_picker.dart';
 
@@ -11,23 +9,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  double goalWeight = 95.0;
+  double goalWeight;
   NumberPicker decimalNumberPicker;
-
-  @override
-  void initState() {
-    getGoalWeight();
-    super.initState();
-  }
-
-  Future getGoalWeight() async {
-    var box = Hive.box('goal');
-    var goal = await box.get('goalWeight');
-    if (goal is double) {
-      goalWeight = goal;
-    }
-    setState(() {});
-  }
 
   void _handleValueChanged(num value) {
     if (value != null) {
@@ -48,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     decimalNumberPicker = NumberPicker.decimal(
-        initialValue: goalWeight,
+        initialValue: getGoalWeigth(),
         minValue: 0,
         maxValue: 300,
         decimalPlaces: 1,
@@ -202,7 +185,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                             TextButton(
                               onPressed: () =>
-                                  {deleteWeights(), Navigator.pop(context)},
+                                  {clearWeights(), Navigator.pop(context)},
                               child: Text(
                                 'Yes',
                                 style: TextStyle(color: Colors.red),
@@ -315,7 +298,7 @@ class _SettingsPageState extends State<SettingsPage> {
           minValue: 0,
           maxValue: 300,
           decimalPlaces: 1,
-          initialDoubleValue: goalWeight,
+          initialDoubleValue: getGoalWeigth(),
           title: Text('Goal'),
         );
       },
