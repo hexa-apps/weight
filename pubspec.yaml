@@ -33,7 +33,11 @@ flutter:
   assets:
     - assets/svg/
     - assets/png/
-
+  
+  fonts:
+    - family:  MyFlutterApp
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

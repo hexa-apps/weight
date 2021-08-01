@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weight/core/services/my_flutter_app_icons.dart';
 import '../core/services/weights.dart';
 import '../widgets/number_picker.dart';
 
@@ -11,6 +12,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   double goalWeight;
   NumberPicker decimalNumberPicker;
+  var isSelected = [true, false];
 
   void _handleValueChanged(num value) {
     if (value != null) {
@@ -60,6 +62,32 @@ class _SettingsPageState extends State<SettingsPage> {
                 title: Text(
                   'Profile',
                   style: TextStyle(fontSize: 14),
+                ),
+              ),
+            ),
+            Card(
+              elevation: 0,
+              // shadowColor: Colors.grey.withOpacity(0.25),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: ListTile(
+                dense: true,
+                title: Text('Gender',
+                    style: TextStyle(color: Color(0xFF263359), fontSize: 16)),
+                trailing: ToggleButtons(
+                  borderColor: Colors.white,
+                  selectedBorderColor: Colors.white,
+                  isSelected: isSelected,
+                  onPressed: (index) {
+                    setState(() {
+                      isSelected = [false, false];
+                      isSelected[index] = !isSelected[index];
+                    });
+                  },
+                  children: [
+                    Icon(MyFlutterApp.male, color: Colors.blue,),
+                    Icon(MyFlutterApp.female, color: Colors.red,),
+                  ],
                 ),
               ),
             ),
