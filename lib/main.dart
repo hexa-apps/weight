@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            appBarTheme: AppBarTheme(brightness: Brightness.dark),
+            // appBarTheme: AppBarTheme(brightness: Brightness.dark),
             textTheme:
                 GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme)),
         debugShowCheckedModeBanner: false,
