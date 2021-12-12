@@ -1,4 +1,4 @@
-import 'package:customtogglebuttons/customtogglebuttons.dart';
+// import 'package:customtogglebuttons/customtogglebuttons.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,45 +32,44 @@ class _HistoryPageState extends State<HistoryPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: darkColors['primary'],
-              ),
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.85,
-              height: 45,
-              child: CustomToggleButtons(
-                constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width * 0.27,
-                    maxWidth: MediaQuery.of(context).size.width * 0.27),
-                splashColor: darkColors['primary'].withOpacity(0.5),
-                color: Colors.white,
-                selectedColor: darkColors['textSecondary'],
-                fillColor: darkColors['secondary'],
-                renderBorder: false,
-                isSelected: isSelected,
-                onPressed: (index) {
-                  setState(() {
-                    isSelected = [false, false, false];
-                    isSelected[index] = !isSelected[index];
-                  });
-                },
-                children: <Widget>[
-                  Text(
-                    'Year',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Month',
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'Week',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: darkColors['primary'],
+                ),
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.85,
+                height: 45,
+                child: ToggleButtons(
+                  splashColor: darkColors['primary'].withOpacity(0.5),
+                  color: Colors.white,
+                  selectedColor: darkColors['textSecondary'],
+                  fillColor: darkColors['secondary'],
+                  renderBorder: false,
+                  isSelected: isSelected,
+                  onPressed: (index) {
+                    setState(() {
+                      isSelected = [false, false, false];
+                      isSelected[index] = !isSelected[index];
+                    });
+                  },
+                  constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.27,
+                      maxWidth: MediaQuery.of(context).size.width * 0.27),
+                  children: [
+                    Text(
+                      'Year',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Month',
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      'Week',
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                )),
           ],
         ),
         centerTitle: true,
@@ -147,7 +146,8 @@ class _HistoryPageState extends State<HistoryPage> {
                                         child: Text(
                                           '+  Add current weight',
                                           style: TextStyle(
-                                              color: darkColors['textSecondary']),
+                                              color:
+                                                  darkColors['textSecondary']),
                                         ),
                                       ),
                                     ))),
