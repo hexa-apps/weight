@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weight/pages/seconddesign/home_page.dart';
-import 'package:weight/pages/seconddesign/list_page.dart';
+import 'package:weight/pages/home_page.dart';
+import 'package:weight/pages/list_page.dart';
 import 'package:weight/pages/settings_page.dart';
 
 class HomeView extends StatefulWidget {
