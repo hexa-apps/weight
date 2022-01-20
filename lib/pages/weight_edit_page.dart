@@ -60,116 +60,129 @@ class _WeightEditPageState extends State<WeightEditPage> {
         onChanged: _handleValueChanged);
     var title = widget.fromEdit ? 'Edit' : 'Add';
     return Container(
-        color: Color(0xff010D33),
-        child: SafeArea(
-            child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Color(0xff010D33),
-            elevation: 0,
-            centerTitle: true,
-            title: Text('$title Weight'),
+      color: Color(0xFFF0F9FF),
+      child: SafeArea(
+          child: Scaffold(
+        backgroundColor: Color(0xFFF0F9FF),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Color(0xFF263359)),
+          backgroundColor: Color(0xFFF0F9FF),
+          elevation: 0,
+          centerTitle: true,
+          title: Text(
+            '$title Weight',
+            style: TextStyle(
+                color: Color(0xFF263359), fontWeight: FontWeight.bold),
           ),
-          body: Container(
-            color: Color(0xff010D33),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Color(0xFF0A1640),
+        ),
+        body: Container(
+          color: Color(0xFFF0F9FF),
+          margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+          child: ListView(
+            children: [
+              SizedBox(
+                height: 8,
+              ),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: Icon(
+                    CupertinoIcons.person_circle_fill,
+                    color: Color(0xFF2F68FF).withOpacity(0.85),
+                    size: 36,
+                  ),
+                  title: Text(
+                    widgetWeight.toString(),
+                    style: TextStyle(color: Color(0xFF263359)),
+                  ),
+                  onTap: () => _showDoubleDialog(),
+                  subtitle: Text(
+                    'Weight',
+                    style: TextStyle(color: Colors.black45),
+                  ),
                 ),
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 8,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        CupertinoIcons.person_circle_fill,
-                        color: Colors.white70,
-                      ),
-                      title: Text(
-                        widgetWeight.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () => _showDoubleDialog(),
-                      subtitle: Text(
-                        'Weight',
-                        style: TextStyle(color: Colors.white54),
-                      ),
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        CupertinoIcons.time_solid,
-                        color: Colors.white70,
-                      ),
-                      title: Text(
-                        selectedDate.toLocal().toString().split(' ').first,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () async {
-                        final picked = await showDatePicker(
-                          context: context,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(2015),
-                          lastDate: DateTime.now().add(Duration(days: 7)),
-                          // selectableDayPredicate: _predicate
-                        );
-                        if (![null, DateTime.now()].contains(picked)) {
-                          setState(() {
-                            selectedDate = picked;
-                          });
-                        }
-                      },
-                      subtitle: Text(
-                        'Date',
-                        style: TextStyle(color: Colors.white54),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        widget.fromEdit
-                            ? Container(
-                                width: MediaQuery.of(context).size.width * 0.35,
-                                margin: EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                    color: Colors.redAccent.withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(16)),
-                                child: TextButton(
-                                  onPressed: () => _deleteButton(),
-                                  child: Text(
-                                    'Delete',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        Container(
+              ),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: ListTile(
+                  leading: Icon(
+                    CupertinoIcons.time_solid,
+                    color: Color(0xFF2F68FF).withOpacity(0.85),
+                    size: 36,
+                  ),
+                  title: Text(
+                    selectedDate.toLocal().toString().split(' ').first,
+                    style: TextStyle(color: Color(0xFF263359)),
+                  ),
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime(2015),
+                      lastDate: DateTime.now().add(Duration(days: 7)),
+                      // selectableDayPredicate: _predicate
+                    );
+                    if (![null, DateTime.now()].contains(picked)) {
+                      setState(() {
+                        selectedDate = picked;
+                      });
+                    }
+                  },
+                  subtitle: Text(
+                    'Date',
+                    style: TextStyle(color: Colors.black45),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: widget.fromEdit
+                    ? MainAxisAlignment.spaceEvenly
+                    : MainAxisAlignment.end,
+                children: [
+                  widget.fromEdit
+                      ? Container(
                           width: MediaQuery.of(context).size.width * 0.35,
                           margin: EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                              color: Colors.lightGreenAccent.withOpacity(0.4),
+                              color: Colors.redAccent,
                               borderRadius: BorderRadius.circular(16)),
                           child: TextButton(
-                            onPressed: () => _saveButton(),
+                            onPressed: () => _deleteButton(),
                             child: Text(
-                              'Save',
+                              'Delete',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+                        )
+                      : Container(),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.35,
+                    margin: widget.fromEdit
+                        ? EdgeInsets.all(6)
+                        : EdgeInsets.fromLTRB(0, 6, 36, 0),
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: TextButton(
+                      onPressed: () => _saveButton(),
+                      child: Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-        )));
+        ),
+      )),
+    );
   }
 
   Future _showDoubleDialog() async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:weight/core/class/time_series_weight.dart';
-import 'package:weight/core/data/constants.dart';
 
 class ChartCard extends StatelessWidget {
   final List<charts.Series<TimeSeriesWeight, DateTime>> sampleData;
@@ -14,13 +13,15 @@ class ChartCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
-        width: width,
+        // margin: EdgeInsets.fromLTRB(12, 8, 12, 8),
+        // width: width,
         height: height,
         child: Card(
+            elevation: 0,
+            // shadowColor: Colors.grey.withOpacity(0.25),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            color: darkColors['primary'],
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            // color: darkColors['primary'],
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Expanded(
@@ -38,7 +39,7 @@ class ChartCard extends StatelessWidget {
                       ),
                       Text(
                         'Mean',
-                        style: TextStyle(color: Colors.white60, fontSize: 10),
+                        style: TextStyle(color: Colors.grey[900], fontSize: 10),
                       ),
                       SizedBox(
                         width: 6,
@@ -53,7 +54,7 @@ class ChartCard extends StatelessWidget {
                       ),
                       Text(
                         'Goal',
-                        style: TextStyle(color: Colors.white60, fontSize: 10),
+                        style: TextStyle(color: Colors.grey[900], fontSize: 10),
                       ),
                       SizedBox(
                         width: 6,
@@ -68,7 +69,7 @@ class ChartCard extends StatelessWidget {
                       ),
                       Text(
                         'Weight',
-                        style: TextStyle(color: Colors.white60, fontSize: 10),
+                        style: TextStyle(color: Colors.grey[900], fontSize: 10),
                       ),
                     ],
                   )),
@@ -83,11 +84,11 @@ class ChartCard extends StatelessWidget {
                         renderSpec: charts.GridlineRendererSpec(
                             lineStyle: charts.LineStyleSpec(
                                 color: charts.ColorUtil.fromDartColor(
-                                    Colors.white12)),
+                                    Colors.grey[900].withOpacity(0.12))),
                             labelStyle: charts.TextStyleSpec(
                                 fontSize: 12,
                                 color: charts.ColorUtil.fromDartColor(
-                                    Colors.white30))),
+                                    Colors.grey[900].withOpacity(0.3)))),
                         showAxisLine: false,
                         tickProviderSpec: charts.BasicNumericTickProviderSpec(
                             desiredTickCount: 5, zeroBound: false)),
@@ -95,11 +96,11 @@ class ChartCard extends StatelessWidget {
                         renderSpec: charts.GridlineRendererSpec(
                             lineStyle: charts.LineStyleSpec(
                                 color: charts.ColorUtil.fromDartColor(
-                                    Colors.white12)),
+                                    Colors.grey[900].withOpacity(0.12))),
                             labelStyle: charts.TextStyleSpec(
                                 fontSize: 12,
                                 color: charts.ColorUtil.fromDartColor(
-                                    Colors.white30))),
+                                    Colors.grey[900].withOpacity(0.3)))),
                         showAxisLine: false),
                     defaultRenderer: charts.LineRendererConfig(),
                     customSeriesRenderers: [
